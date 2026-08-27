@@ -3529,8 +3529,8 @@ body.tutorial-active .tutorial-target {
 /* Final desktop/tablet header placement: keep the search compact and visibly clear of the tabs. */
 @media (min-width: 681px) {
     .menu-row > .global-search {
-        width: 220px !important;
-        max-width: 220px !important;
+        width: 160px !important;
+        max-width: 160px !important;
         justify-self: start;
         transform: translateX(-32px);
     }
