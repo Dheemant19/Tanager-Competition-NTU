@@ -3525,3 +3525,13 @@ body.tutorial-active .tutorial-target {
         background: Highlight;
     }
 }
+
+/* Final desktop/tablet header placement: keep the search compact and clear of the tabs. */
+@media (min-width: 681px) and (max-width: 1280px) {
+    .menu-row > .global-search {
+        width: 210px !important;
+        max-width: 210px !important;
+        justify-self: start;
+        transform: translateX(-18px);
+    }
+}
