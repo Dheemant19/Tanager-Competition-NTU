@@ -40,6 +40,8 @@
         "GHG-plumes"
       ],
       "location_description": "Purovsky Rayon, Yamalo-Nenets Autonomous Okrug, Ural Federal District, Russia",
+      "reviewed_plume_present": false,
+      "reviewed_plume_note": "Reviewed as a no-plume scene; retrieval responses may contain surface or instrument clutter.",
       "datetime": "2025-02-26T06:54:47.197859Z",
       "quality_category": "standard",
       "collection_mode": "standard_sensitivity",
@@ -96,6 +98,8 @@
         "GHG-plumes"
       ],
       "location_description": "Kusmunda, Katghora Tahsil, Korba, Chhattisgarh, 495454, India",
+      "reviewed_plume_present": false,
+      "reviewed_plume_note": "Reviewed as a no-plume scene; retrieval responses may contain surface or instrument clutter.",
       "datetime": "2025-02-19T05:32:51.310080Z",
       "quality_category": "standard",
       "collection_mode": "standard_sensitivity",

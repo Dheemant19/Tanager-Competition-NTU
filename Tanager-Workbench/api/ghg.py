@@ -49,6 +49,8 @@ HITRAN_CACHE = APP_ROOT / "data" / "hitran_cache"
 MIN_PREVIEW_SIZE = 160
 MAX_PREVIEW_SIZE = 640
 MAX_CACHE_ITEMS = 4
+ANALYSIS_CACHE_DIR = APP_ROOT / "data" / "ghg_analysis_cache"
+_TARGET_CACHE: dict[tuple[bytes, bytes], np.ndarray] = {}
 
 PALETTES = {
     "cwmf": ["#0d0887", "#7e03a8", "#cc4778", "#f89540", "#f0f921"],
@@ -185,6 +187,13 @@ def _read_basic_scene(root, max_size: int) -> BasicRadianceScene:
 
 
 def _target_for_scene(scene: BasicRadianceScene) -> np.ndarray:
+    signature = (
+        np.asarray(scene.wavelengths_nm, dtype=np.float32).tobytes(),
+        np.asarray(scene.fwhm_nm, dtype=np.float32).tobytes(),
+    )
+    cached = _TARGET_CACHE.get(signature)
+    if cached is not None:
+        return cached
     try:
         target = build_hitran_ch4_target(
             scene.wavelengths_nm,
@@ -196,6 +205,7 @@ def _target_for_scene(scene: BasicRadianceScene) -> np.ndarray:
     check = synthetic_target_test(target)
     if check["recovered_ppm_m"] <= 0 or abs(check["relative_error"]) > 1.0e-8:
         raise SpectrumError(500, "methane target sign/unit validation failed")
+    _TARGET_CACHE[signature] = target
     return target
 
 
@@ -266,13 +276,33 @@ def methane_from_root(scene_id: str, scene_meta: dict, root, layer: str, max_siz
     scene = _read_basic_scene(root, max_size)
     target = _target_for_scene(scene)
     if layer == "artifact":
-        result = run_columnwise_mag1c(scene, target)
-        values = result.enhancement_vertical_ppm_m
+        # Use the two-pass CWMF significance field to retain only positive,
+        # locally supported candidates. This is stable for short/cloudy scenes
+        # where the iterative MAG1C request exceeds serverless limits or
+        # collapses to an all-zero solution.
+        result = run_iterative_columnwise_matched_filter(scene, target)
+        raw_values = result.enhancement_vertical_ppm_m
+        significance = result.significance
+        candidate = (
+            result.valid
+            & np.isfinite(raw_values)
+            & np.isfinite(significance)
+            & (raw_values > 0.0)
+            & (significance >= 3.0)
+        )
+        padded = np.pad(candidate.astype(np.uint8), 1)
+        neighbour_count = sum(
+            padded[1 + row : 1 + row + candidate.shape[0], 1 + column : 1 + column + candidate.shape[1]]
+            for row in (-1, 0, 1)
+            for column in (-1, 0, 1)
+        )
+        candidate &= neighbour_count >= 3
+        values = np.where(candidate, raw_values, 0.0).astype(np.float32)
         analysis_mask = result.valid & np.isfinite(values)
         background_counts = result.background_spectra_per_detector
-        label = "Artifact-suppressed methane response"
+        label = "Artifact-suppressed CWMF response"
         cmap_name = "viridis"
-        significance = None
+        sparse_candidate_count = int(candidate.sum())
     else:
         result = run_iterative_columnwise_matched_filter(scene, target)
         values = result.enhancement_vertical_ppm_m
@@ -281,6 +311,14 @@ def methane_from_root(scene_id: str, scene_meta: dict, root, layer: str, max_siz
         label = "CWMF methane analysis"
         cmap_name = "plasma"
         significance = result.significance
+        sparse_candidate_count = None
+
+    insufficient_retrieval = int(analysis_mask.sum()) < 25
+    if insufficient_retrieval:
+        values = np.zeros(scene.latitude.shape, dtype=np.float32)
+        analysis_mask = scene.valid & np.isfinite(scene.latitude) & np.isfinite(scene.longitude)
+        if int(analysis_mask.sum()) < 25:
+            analysis_mask = np.isfinite(scene.latitude) & np.isfinite(scene.longitude)
 
     preview, preview_mask, bounds = _north_up_grid(
         values,
@@ -289,13 +327,21 @@ def methane_from_root(scene_id: str, scene_meta: dict, root, layer: str, max_siz
         analysis_mask,
         max_size,
     )
-    high = _finite_percentile(values, analysis_mask, 99.5)
-    low = max(0.0, _finite_percentile(values, analysis_mask, 50.0))
+    display_mask = candidate if layer == "artifact" and sparse_candidate_count else analysis_mask
+    high = _finite_percentile(values, display_mask, 99.5) if int(display_mask.sum()) >= 25 else 1.0
+    low = 0.0 if layer == "artifact" else max(0.0, _finite_percentile(values, analysis_mask, 50.0))
+    if insufficient_retrieval:
+        low, high = 0.0, 1.0
     if high <= low:
         low = _finite_percentile(values, analysis_mask, 2.0)
+    if layer == "artifact" and high <= low:
+        # A sparse retrieval may legitimately suppress every candidate. Keep
+        # that zero-response result renderable instead of reporting a failure.
+        low, high = 0.0, 1.0
     processed_columns = int(np.sum(np.asarray(background_counts) > 0))
     preferred_columns = int(np.sum(np.asarray(background_counts) >= 7 * scene.wavelengths_nm.size))
-    valid_values = values[analysis_mask]
+    metric_mask = display_mask if int(display_mask.sum()) else analysis_mask
+    valid_values = values[metric_mask]
     metrics = {
         "median_ppm_m": float(np.nanmedian(valid_values)),
         "p95_ppm_m": float(np.nanpercentile(valid_values, 95)),
@@ -304,9 +350,15 @@ def methane_from_root(scene_id: str, scene_meta: dict, root, layer: str, max_siz
         "total_columns": int(values.shape[1]),
         "valid_pixel_count": int(analysis_mask.sum()),
     }
+    if sparse_candidate_count is not None:
+        metrics["candidate_pixel_count"] = sparse_candidate_count
     if significance is not None:
         finite_significance = significance[analysis_mask & np.isfinite(significance)]
-        metrics["peak_significance_sigma"] = float(np.nanpercentile(finite_significance, 99.9))
+        metrics["peak_significance_sigma"] = (
+            float(np.nanpercentile(finite_significance, 99.9))
+            if finite_significance.size
+            else None
+        )
         finite_noise = result.noise_ppm_m_per_detector[np.isfinite(result.noise_ppm_m_per_detector)]
         metrics["median_robust_noise_ppm_m"] = float(np.nanmedian(finite_noise)) if finite_noise.size else None
 
@@ -330,6 +382,8 @@ def methane_from_root(scene_id: str, scene_meta: dict, root, layer: str, max_siz
             "methane_window_nm": [float(scene.wavelengths_nm[0]), float(scene.wavelengths_nm[-1])],
             "band_count": int(scene.wavelengths_nm.size),
             "valid_fraction": float(scene.valid.mean()),
+            "algorithm": "two_pass_cwmf_3sigma_local_support" if layer == "artifact" else "two_pass_cwmf",
+            "retrieval_status": "insufficient_valid_background" if insufficient_retrieval else "ready",
         },
         "comparison_available": bool((scene_meta.get("published_reference") or {}).get("url") or (scene_meta.get("published_reference") or {}).get("local_path")),
     }
@@ -577,7 +631,7 @@ def reference_response(scene_id: str, scene_meta: dict, max_size: int) -> dict:
             "product": {
                 "key": "reference",
                 "label": scene_meta.get("comparison_label", "Published methane reference"),
-                "units": "ppm m",
+                "units": "display value",
                 "range": cached["range"],
                 "palette": PALETTES["reference"],
                 "image": cached["image"],
@@ -601,7 +655,16 @@ def reference_response(scene_id: str, scene_meta: dict, max_size: int) -> dict:
         mask = np.isfinite(values)
         if nodata is not None:
             mask &= ~np.isclose(values, nodata)
-    low, high = (float(v) for v in np.nanpercentile(values[mask], [2, 98]))
+    valid_pixel_count = int(mask.sum())
+    if valid_pixel_count:
+        percentiles = np.atleast_1d(np.nanpercentile(values[mask], [2, 98]))
+        low, high = float(percentiles[0]), float(percentiles[-1])
+        if not np.isfinite(low) or not np.isfinite(high) or high <= low:
+            low, high = 0.0, max(1.0, float(np.nanmax(values[mask])))
+    else:
+        # Some provider quicklooks are valid rasters containing only nodata.
+        # Return an honest empty overlay instead of crashing comparison mode.
+        low, high = 0.0, 1.0
 
     return {
         "scene_id": scene_id,
@@ -611,12 +674,12 @@ def reference_response(scene_id: str, scene_meta: dict, max_size: int) -> dict:
         "product": {
             "key": "reference",
             "label": scene_meta.get("comparison_label", "Published methane reference"),
-            "units": "ppm m",
+            "units": "display value",
             "range": [low, high],
             "palette": PALETTES["reference"],
             "image": _render(values, mask, "magma", low, high),
             "bounds": bounds,
-            "metrics": {"valid_pixel_count": int(mask.sum()), "reviewed_comparison": reviewed},
+            "metrics": {"valid_pixel_count": valid_pixel_count, "reviewed_comparison": reviewed},
         },
         "plumes": _load_geojson(reference),
         "comparison_available": True,
@@ -625,13 +688,32 @@ def reference_response(scene_id: str, scene_meta: dict, max_size: int) -> dict:
 
 def create_methane_response(scene_id: str, layer: str, max_size: int) -> dict:
     scene_meta = scene_for_id(scene_id)
+    review = None
+    if "reviewed_plume_present" in scene_meta:
+        review = {
+            "plume_present": bool(scene_meta["reviewed_plume_present"]),
+            "note": scene_meta.get("reviewed_plume_note"),
+        }
     if layer == "reference":
-        return reference_response(scene_id, scene_meta, max_size)
+        response = reference_response(scene_id, scene_meta, max_size)
+        if review is not None:
+            response["review"] = review
+        return response
+    cache_path = ANALYSIS_CACHE_DIR / f"{scene_id}__{layer}__{max_size}.json"
+    if cache_path.exists():
+        cached = json.loads(cache_path.read_text(encoding="utf-8"))
+        cached["source"] = "precomputed_hdf5"
+        if review is not None:
+            cached["review"] = review
+        return cached
     product = _basic_product(scene_meta)
     with ExitStack() as stack:
         root = open_hdf5(product, stack)
         source_kind = "local_hdf5" if product.get("local_path") else "remote_hdf5"
-        return methane_from_root(scene_id, scene_meta, root, layer, max_size, source_kind)
+        response = methane_from_root(scene_id, scene_meta, root, layer, max_size, source_kind)
+        if review is not None:
+            response["review"] = review
+        return response
 
 
 def capabilities_response(scene_id: str) -> dict:

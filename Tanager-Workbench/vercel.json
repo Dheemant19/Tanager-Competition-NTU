@@ -23,7 +23,7 @@
   "functions": {
     "api/*.py": {
       "maxDuration": 60,
-      "includeFiles": "{data/spectral_refs/**,data/ghg_scene_manifest.json,data/ghg_reference_cache/**,data/hitran_cache/**}",
+      "includeFiles": "{data/spectral_refs/**,data/ghg_scene_manifest.json,data/ghg_analysis_cache/**,data/ghg_reference_cache/**,data/hitran_cache/**}",
       "excludeFiles": "{tests/**,**/__pycache__/**,**/*.pyc,_uv/**,images/**,walkthrough_assets/**,data/overlays/**,HYPERSPECTRAL_TOOL_COMPARISON.md,NEXT_VERSION_PLAN.md,README_REFINED.md}"
     }
   }

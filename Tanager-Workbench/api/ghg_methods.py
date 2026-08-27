@@ -295,8 +295,17 @@ def _matched_filter_pass(
     ridge_fraction: float,
     min_samples_per_band: float,
     brightness_quantiles: tuple[float, float],
+    background_half_window: int = 3,
+    maximum_half_window: int = 12,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Perform one independent matched-filter fit per detector column."""
+    """Score each detector using an adaptive local across-track background.
+
+    Short or heavily masked scenes often cannot provide five spectra per band
+    inside one detector column. Instead of dropping that detector entirely,
+    pool background candidates from a small symmetric detector neighbourhood,
+    expanding only as far as needed. The fitted filter is still applied only
+    to the centre detector's native spectra.
+    """
 
     bands, rows, detectors = radiance.shape
     enhancement = np.full((rows, detectors), np.nan, dtype=np.float32)
@@ -308,23 +317,35 @@ def _matched_filter_pass(
     minimum_samples = max(int(np.ceil(min_samples_per_band * bands)), bands + 2)
 
     for detector in range(detectors):
-        background_mask = valid[:, detector].copy()
+        half_window = max(0, int(background_half_window))
+        while True:
+            left = max(0, detector - half_window)
+            right = min(detectors, detector + half_window + 1)
+            background_mask = valid[:, left:right].copy()
+            if excluded_background is not None:
+                background_mask &= ~excluded_background[:, left:right]
+            if int(background_mask.sum()) >= minimum_samples or half_window >= maximum_half_window:
+                break
+            half_window = min(maximum_half_window, max(half_window + 1, half_window * 2))
+
         if excluded_background is not None:
-            background_mask &= ~excluded_background[:, detector]
+            background_mask &= ~excluded_background[:, left:right]
         if int(background_mask.sum()) < minimum_samples:
             continue
 
         column = radiance[:, :, detector].T.astype(float, copy=False)
-        brightness = np.nanmedian(column, axis=1)
+        neighbourhood = radiance[:, :, left:right].transpose(1, 2, 0).astype(float, copy=False)
+        candidate_spectra = neighbourhood[background_mask]
+        brightness = np.nanmedian(candidate_spectra, axis=1)
         lower, upper = np.quantile(
-            brightness[background_mask],
+            brightness,
             brightness_quantiles,
         )
-        background_mask &= (brightness >= lower) & (brightness <= upper)
-        if int(background_mask.sum()) < minimum_samples:
+        retained = (brightness >= lower) & (brightness <= upper)
+        if int(retained.sum()) < minimum_samples:
             continue
 
-        background = column[background_mask]
+        background = candidate_spectra[retained]
         mean = np.mean(background, axis=0)
         covariance = np.cov(background, rowvar=False, ddof=1)
         ridge = ridge_fraction * float(np.trace(covariance)) / bands
@@ -346,7 +367,7 @@ def _matched_filter_pass(
             (column[scoreable] - mean) @ solved_target / denominator
         ).astype(np.float32)
         means[detector] = mean.astype(np.float32)
-        background_counts[detector] = int(background_mask.sum())
+        background_counts[detector] = int(retained.sum())
         theoretical_noise[detector] = np.sqrt(1.0 / denominator)
         condition_numbers[detector] = np.linalg.cond(conditioned)
 
@@ -367,6 +388,8 @@ def run_iterative_columnwise_matched_filter(
     min_samples_per_band: float = 5.0,
     first_pass_exclusion_sigma: float = 2.0,
     brightness_quantiles: tuple[float, float] = (0.005, 0.995),
+    background_half_window: int = 3,
+    maximum_half_window: int = 12,
 ) -> MatchedFilterResult:
     """Run a two-pass detector-column matched filter on native radiance.
 
@@ -389,6 +412,8 @@ def run_iterative_columnwise_matched_filter(
         ridge_fraction=ridge_fraction,
         min_samples_per_band=min_samples_per_band,
         brightness_quantiles=brightness_quantiles,
+        background_half_window=background_half_window,
+        maximum_half_window=maximum_half_window,
     )
     first_enhancement = first[0]
     first_significance, _ = _column_standardize(
@@ -409,6 +434,8 @@ def run_iterative_columnwise_matched_filter(
         ridge_fraction=ridge_fraction,
         min_samples_per_band=min_samples_per_band,
         brightness_quantiles=brightness_quantiles,
+        background_half_window=background_half_window,
+        maximum_half_window=maximum_half_window,
     )
     final_enhancement = second[0]
     significance, robust_noise = _column_standardize(
@@ -449,6 +476,8 @@ def run_columnwise_mag1c(
     covariance_diagonal_fraction: float = 1.0e-3,
     brightness_quantiles: tuple[float, float] = (0.005, 0.995),
     min_samples_per_band: float = 5.0,
+    background_half_window: int = 3,
+    maximum_half_window: int = 12,
 ) -> SparseMatchedFilterResult:
     """Run an albedo-corrected, reweighted-L1 sparse matched filter.
 
@@ -487,20 +516,37 @@ def run_columnwise_mag1c(
 
     for detector in range(detectors):
         scoreable = scene.valid[:, detector]
-        if int(scoreable.sum()) < minimum_samples:
+        if not np.any(scoreable):
             continue
         row_indices = np.flatnonzero(scoreable)
         spectra = scene.radiance[:, scoreable, detector].T.astype(float, copy=False)
-        brightness = np.nanmedian(spectra, axis=1)
+
+        half_window = max(0, int(background_half_window))
+        while True:
+            left = max(0, detector - half_window)
+            right = min(detectors, detector + half_window + 1)
+            candidate_mask = scene.valid[:, left:right]
+            if int(candidate_mask.sum()) >= minimum_samples or half_window >= maximum_half_window:
+                break
+            half_window = min(maximum_half_window, max(half_window + 1, half_window * 2))
+        if int(candidate_mask.sum()) < minimum_samples:
+            continue
+
+        neighbourhood = scene.radiance[:, :, left:right].transpose(1, 2, 0).astype(float, copy=False)
+        candidates = neighbourhood[candidate_mask]
+        brightness = np.nanmedian(candidates, axis=1)
         lower, upper = np.quantile(brightness, brightness_quantiles)
         stats_mask = (brightness >= lower) & (brightness <= upper)
         if int(stats_mask.sum()) < minimum_samples:
             continue
 
-        background = spectra[stats_mask].copy()
+        background = candidates[stats_mask].copy()
         mean = np.mean(background, axis=0)
         albedo_factor = (spectra @ mean) / float(mean @ mean)
+        background_albedo = (background @ mean) / float(mean @ mean)
         if np.any(~np.isfinite(albedo_factor)) or np.any(albedo_factor <= 0.0):
+            continue
+        if np.any(~np.isfinite(background_albedo)) or np.any(background_albedo <= 0.0):
             continue
 
         target = mean * template
@@ -522,13 +568,18 @@ def run_columnwise_mag1c(
             albedo_factor * normalizer
         )
         matched = np.maximum(matched, 0.0)
+        background_matched = np.maximum(
+            ((background - mean) @ solved_target) / (background_albedo * normalizer),
+            0.0,
+        )
 
         for _ in range(iterations):
             regularizer = 1.0 / (albedo_factor * (matched + epsilon))
-            background_matched = matched[stats_mask]
-            background_albedo = albedo_factor[stats_mask]
+            background_regularizer = 1.0 / (
+                background_albedo * (background_matched + epsilon)
+            )
             modified_background = (
-                spectra[stats_mask]
+                background
                 - covariance_update_scaling
                 * background_albedo[:, None]
                 * background_matched[:, None]
@@ -553,6 +604,10 @@ def run_columnwise_mag1c(
                 (spectra - mean) @ solved_target - regularizer
             ) / (albedo_factor * normalizer)
             matched = np.maximum(matched, 0.0)
+            background_matched = (
+                (background - mean) @ solved_target - background_regularizer
+            ) / (background_albedo * normalizer)
+            background_matched = np.maximum(background_matched, 0.0)
 
         if not np.all(np.isfinite(matched)):
             continue
@@ -560,7 +615,7 @@ def run_columnwise_mag1c(
             matched * concentration_scale
         ).astype(np.float32)
         albedo[row_indices, detector] = albedo_factor.astype(np.float32)
-        background_counts[detector] = int(stats_mask.sum())
+        background_counts[detector] = int(background.shape[0])
         condition_numbers[detector] = np.linalg.cond(covariance)
 
     vertical = enhancement * np.cos(

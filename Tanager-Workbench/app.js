@@ -3118,6 +3118,9 @@ function ghgMetricRows(data) {
     if (data.layer === 'reference') {
         const reviewed = metrics.reviewed_comparison?.cwmf_inside_cm_b;
         return [
+            ...(data.review?.plume_present === false ? [
+                ['Reviewed plume status', 'No plume']
+            ] : []),
             ...(reviewed?.correlation != null ? [
                 ['CWMF correlation', `r = ${formatGhgNumber(reviewed.correlation, 3)}`],
                 ['Compared pixels', formatGhgNumber(reviewed.n, 0)],
@@ -3127,6 +3130,9 @@ function ghgMetricRows(data) {
         ];
     }
     const rows = [
+        ...(data.review?.plume_present === false ? [
+            ['Reviewed plume status', 'No plume']
+        ] : []),
         ['Median', `${formatGhgNumber(metrics.median_ppm_m)} ppm·m`],
         ['95th percentile', `${formatGhgNumber(metrics.p95_ppm_m)} ppm·m`]
     ];
