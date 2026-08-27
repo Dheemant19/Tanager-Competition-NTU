@@ -1,0 +1,8 @@
+h5py
+numpy
+pyproj
+fsspec
+requests
+aiohttp
+zarr
+hitran-api

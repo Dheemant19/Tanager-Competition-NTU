@@ -1,0 +1,7 @@
+# Local development artifacts
+_uv/
+__pycache__/
+*.pyc
+
+# Included in the repository for local development, but not required in the deployment bundle
+README.md

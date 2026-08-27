@@ -1,0 +1,6 @@
+# Local deployment state and development environments
+.vercel/
+_uv/
+.env*
+__pycache__/
+*.pyc

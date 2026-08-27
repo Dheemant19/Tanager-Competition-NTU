@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "",
+  "outputDirectory": "",
+  "framework": null,
+  "rewrites": [
+    { "source": "/api/spectrum", "destination": "/api/spectrum" },
+    { "source": "/api/roi", "destination": "/api/roi" },
+    { "source": "/api/composite", "destination": "/api/composite" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+      ]
+    }
+  ],
+  "functions": {
+    "api/*.py": {
+      "maxDuration": 60,
+      "includeFiles": "{data/spectral_refs/**,data/ghg_reference_cache/**,data/hitran_cache/**}",
+      "excludeFiles": "{tests/**,**/__pycache__/**,**/*.pyc,_uv/**,images/**,walkthrough_assets/**,data/overlays/**,HYPERSPECTRAL_TOOL_COMPARISON.md,NEXT_VERSION_PLAN.md,README_REFINED.md}"
+    }
+  }
+}

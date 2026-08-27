@@ -1,0 +1,22 @@
+{
+  "type": "FeatureCollection",
+  "properties": {
+    "schema": "tanager-workbench-sample/v1",
+    "scene_id": "20251029_165501_94_4001"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "scene_id": "20251029_165501_94_4001",
+        "sample_type": "point",
+        "label": "P1",
+        "radius_pixels": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-77.60099, 43.04305]
+      }
+    }
+  ]
+}

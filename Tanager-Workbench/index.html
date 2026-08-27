@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanager-1 Scientific Workbench</title>
+    <meta name="description" content="Professional GIS workspace for discovering and analysing Planet Tanager-1 hyperspectral scenes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;650;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+    <link rel="stylesheet" href="styles.css?v=analysis-ui-v2-20260804">
+</head>
+<body>
+<svg class="icon-sprite" aria-hidden="true">
+    <symbol id="i-catalogue" viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 9h16M9 9v10"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7L4 5Z"/></symbol>
+    <symbol id="i-cursor" viewBox="0 0 24 24"><path d="m5 3 13 9-6 1 3 6-2 1-3-6-5 4V3Z"/></symbol>
+    <symbol id="i-point" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></symbol>
+    <symbol id="i-square" viewBox="0 0 24 24"><rect x="4.5" y="4.5" width="15" height="15" rx="1.5"/><circle cx="4.5" cy="4.5" r="1.35"/><circle cx="19.5" cy="19.5" r="1.35"/></symbol>
+    <symbol id="i-rect" viewBox="0 0 24 24"><rect x="2.75" y="6.5" width="18.5" height="11" rx="1.5"/><circle cx="2.75" cy="6.5" r="1.35"/><circle cx="21.25" cy="17.5" r="1.35"/></symbol>
+    <symbol id="i-pentagon" viewBox="0 0 24 24"><path d="m12 3 8.6 6.25-3.3 10.1H6.7L3.4 9.25 12 3Z"/><circle cx="12" cy="3" r="1.25"/><circle cx="20.6" cy="9.25" r="1.25"/></symbol>
+    <symbol id="i-polygon" viewBox="0 0 24 24"><path d="m4.5 5.5 13-2 3 11.5-7.5 5.5-10-6.5 1.5-8.5Z"/><circle cx="4.5" cy="5.5" r="1.35"/><circle cx="17.5" cy="3.5" r="1.35"/><circle cx="20.5" cy="15" r="1.35"/><circle cx="13" cy="20.5" r="1.35"/><circle cx="3" cy="14" r="1.35"/></symbol>
+    <symbol id="i-compare-points" viewBox="0 0 24 24"><circle cx="7" cy="8" r="2.5"/><circle cx="17" cy="16" r="2.5"/><path d="M9.5 8h5m-2.5-2.5L14.5 8 12 10.5"/></symbol>
+    <symbol id="i-compare-areas" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="7" height="7" rx="1"/><rect x="13.5" y="12.5" width="7" height="7" rx="1"/><path d="M10.5 8h4m-2-2 2 2-2 2"/></symbol>
+    <symbol id="i-compose" viewBox="0 0 24 24"><circle cx="8" cy="9" r="5"/><circle cx="16" cy="9" r="5"/><circle cx="12" cy="15" r="5"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7 4 12l5 5"/><path d="M5 12h8a6 6 0 0 1 6 6"/></symbol>
+</svg>
+
+<header id="app-chrome">
+    <div class="menu-row">
+        <div class="brand-block">
+            <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div>
+                <div class="brand-name">Tanager Workbench</div>
+                <div class="brand-subtitle">Hyperspectral analysis</div>
+            </div>
+        </div>
+        <label class="global-search overview-only">
+            <svg><use href="#i-search"></use></svg>
+            <input type="search" id="f-search" placeholder="Find scene or location" aria-label="Search catalogue">
+            <kbd>/</kbd>
+        </label>
+        <nav class="workspace-tabs" aria-label="Main workspace">
+            <button class="active" id="tab-overview" type="button" role="tab" aria-selected="true" aria-controls="workspace">Overview</button>
+            <button id="tab-analysis" type="button" role="tab" aria-selected="false" aria-controls="workspace">Analysis</button>
+        </nav>
+        <div class="header-actions">
+            <button class="secondary-button" id="tutorial-launcher" type="button" aria-haspopup="dialog" aria-controls="tutorial-dialog">Tutorial</button>
+            <div class="session-metrics">
+                <span class="utc"><strong id="utc-clock">--:--:--</strong> UTC</span>
+                <span><strong id="s-filt">0</strong> visible</span>
+                <span><strong id="s-total">0</strong> scenes</span>
+            </div>
+        </div>
+    </div>
+
+</header>
+
+<div id="workspace">
+    <button class="dock-rail left" id="catalog-rail" type="button" aria-label="Open catalogue">
+        <svg><use href="#i-catalogue"></use></svg><span>Catalogue</span>
+    </button>
+
+    <aside id="catalog-dock" class="dock-shell">
+        <div class="dock-header catalogue-header">
+            <div><h1>Catalogue</h1><span><b id="results-count">0</b> matching scenes</span></div>
+            <button class="icon-button" id="catalog-close" type="button" title="Collapse scenes" aria-label="Collapse scenes" aria-expanded="true"><svg><use href="#i-chevron"></use></svg></button>
+        </div>
+        <div class="catalog-split">
+            <section id="filter-subdock">
+                <div class="subdock-header">
+                    <span><svg><use href="#i-filter"></use></svg> Filters</span>
+                    <button class="icon-button" id="filter-collapse" type="button" title="Collapse filters"><svg><use href="#i-chevron"></use></svg></button>
+                </div>
+                <div class="filter-scroll">
+                    <div class="filter-section">
+                        <div class="section-title">Collections</div>
+                        <div class="coll-list" id="coll-list"></div>
+                    </div>
+                    <div class="filter-section">
+                        <div class="range-head"><span>Maximum cloud</span><output id="cloud-val">100%</output></div>
+                        <input type="range" id="f-cloud" min="0" max="100" value="100" class="range-slider">
+                    </div>
+                    <div class="filter-section">
+                        <div class="section-title">Acquisition date</div>
+                        <div class="field-grid">
+                            <label><span>From</span><input type="date" id="f-date-from" class="field-control"></label>
+                            <label><span>To</span><input type="date" id="f-date-to" class="field-control"></label>
+                        </div>
+                    </div>
+                    <div class="filter-section">
+                        <label class="field-stack"><span>Collection mode</span>
+                            <select id="f-mode" class="field-control">
+                                <option value="">Any mode</option>
+                                <option value="standard_sensitivity">Standard sensitivity</option>
+                                <option value="maximum_sensitivity">Maximum sensitivity</option>
+                                <option value="glint">Glint</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="filter-section compact-ranges">
+                        <div class="range-head"><span>Minimum sun</span><output id="sun-val">0°</output></div>
+                        <input type="range" id="f-sun" min="0" max="80" value="0" class="range-slider">
+                        <div class="range-head"><span>Maximum off-nadir</span><output id="off-nadir-val">31°</output></div>
+                        <input type="range" id="f-off-nadir" min="0" max="31" value="31" class="range-slider">
+                        <div class="range-head"><span>Maximum haze</span><output id="haze-val">100%</output></div>
+                        <input type="range" id="f-haze" min="0" max="100" value="100" class="range-slider">
+                    </div>
+                    <div class="filter-section">
+                        <div class="section-title">Reference boundaries</div>
+                        <label class="check-row"><input type="checkbox" id="r-eq" checked><span>Equatorial belt (±15°)</span></label>
+                        <label class="check-row"><input type="checkbox" id="r-trop"><span>Tropical belt (±30°)</span></label>
+                        <label class="check-row"><input type="checkbox" id="r-sea"><span>Southeast Asia</span></label>
+                    </div>
+                    <div class="filter-section">
+                        <div class="constraint-summary" id="filter-summary">No constraints</div>
+                        <button class="secondary-button full" id="btn-reset" type="button">Reset filters</button>
+                    </div>
+                </div>
+            </section>
+            <button id="filter-rail" type="button" aria-label="Expand filters"><svg><use href="#i-filter"></use></svg><span>Filters</span></button>
+
+            <section id="scene-results">
+                <div class="results-toolbar">
+                    <span>Scenes</span>
+                    <div class="sort-toggle" role="group" aria-label="Sort scenes">
+                        <button id="sort-date" type="button">Newest</button>
+                        <button id="sort-cloud" type="button">Least cloud</button>
+                    </div>
+                </div>
+                <div class="scene-table" id="scene-table"></div>
+            </section>
+        </div>
+    </aside>
+
+    <aside id="analysis-drawer" class="analysis-dock" aria-label="Analysis tools">
+        <div class="analysis-dock-header">
+            <span>Analysis tools</span>
+            <strong id="analysis-scene-id">No scene</strong>
+        </div>
+
+        <details class="analysis-disclosure" data-analysis-panel="browse" open>
+            <summary>Browse &amp; sample</summary>
+            <div class="analysis-panel-body browse-panel-body">
+                <div class="tool-group browse-tool-group">
+                    <button class="task-tool active" id="tool-browse" type="button" title="Browse the selected scene">
+                        <svg><use href="#i-cursor"></use></svg><span>Browse</span>
+                    </button>
+                    <button class="task-tool" id="tool-point" type="button" title="Sample a point">
+                        <svg><use href="#i-point"></use></svg><span>Point</span>
+                    </button>
+                </div>
+                <div class="analysis-control-label">Area</div>
+                <div class="tool-group area-tools" aria-label="Drag an analysis area">
+                    <button class="task-tool roi-shape-btn" type="button" data-roi-shape="square" title="Square: press and drag"><svg><use href="#i-square"></use></svg><span>Square</span></button>
+                    <button class="task-tool roi-shape-btn" type="button" data-roi-shape="rectangle" title="Rectangle: press and drag"><svg><use href="#i-rect"></use></svg><span>Rectangle</span></button>
+                    <button class="task-tool roi-shape-btn" type="button" data-roi-shape="pentagon" title="Pentagon: press and drag"><svg><use href="#i-pentagon"></use></svg><span>Pentagon</span></button>
+                    <button class="task-tool roi-shape-btn" id="btn-draw-roi" type="button" data-roi-shape="custom" title="Draw freeform polygon"><svg><use href="#i-polygon"></use></svg><span>Custom</span></button>
+                </div>
+                <div class="analysis-control-label">Compare</div>
+                <div class="compare-actions">
+                    <button class="secondary-button" id="btn-compare" type="button"><svg><use href="#i-compare-points"></use></svg> Compare Points</button>
+                    <button class="secondary-button" id="btn-compare-area" type="button"><svg><use href="#i-compare-areas"></use></svg> Compare Area</button>
+                </div>
+                <span id="active-tool-label" hidden>Browse scenes</span>
+            </div>
+        </details>
+
+        <details class="analysis-disclosure" data-analysis-panel="spectrum" open>
+            <summary>Spectrum</summary>
+            <div class="analysis-panel-body spectrum-panel">
+                <label class="field-stack product-field"><span>Product</span>
+                    <select id="spectrum-product" class="field-control">
+                        <option value="basic_radiance" disabled>Basic TOA radiance — reference unavailable</option>
+                        <option value="ortho_radiance">Ortho TOA radiance</option>
+                        <option value="basic_sr" disabled>Basic surface reflectance — reference unavailable</option>
+                        <option value="ortho_sr" selected>Ortho surface reflectance</option>
+                    </select>
+                </label>
+                <div class="spectrum-status" id="spectrum-status">Choose Point or an Area tool to sample the selected scene.</div>
+                <div class="compare-list" id="compare-list"></div>
+                <div class="spectral-range" id="spectral-range">
+                    <div class="sr-zones"><span style="left:0%;width:15.1%">VIS</span><span style="left:15.1%;width:33%">NIR</span><span style="left:48.1%;width:51.9%">SWIR</span></div>
+                    <div class="sr-track">
+                        <div class="sr-gradient"></div><div class="sr-mask" id="sr-mask-left"></div><div class="sr-mask" id="sr-mask-right"></div><div class="sr-selected" id="sr-selected"></div>
+                        <input type="range" class="sr-input" id="wl-min" min="376" max="2500" value="376" aria-label="Minimum wavelength">
+                        <input type="range" class="sr-input" id="wl-max" min="376" max="2500" value="2500" aria-label="Maximum wavelength">
+                        <div class="sr-bubble" id="wl-bubble-min">376</div><div class="sr-bubble" id="wl-bubble-max">2500</div>
+                    </div>
+                    <div class="sr-readout"><span id="wl-readout">376–2500 nm</span><button type="button" id="wl-reset">Reset range</button></div>
+                </div>
+                <div class="sample-actions">
+                    <button class="secondary-button" id="btn-undo-sample" type="button" disabled title="Undo the most recent point or compared area"><svg><use href="#i-undo"></use></svg> Undo</button>
+                    <button class="secondary-button" id="btn-clear-roi" type="button">Clear area</button>
+                    <button class="secondary-button danger" id="btn-clear-samples" type="button">Clear spectrum</button>
+                </div>
+                <div class="plot-frame"><div class="plot-skeleton"><span></span><span></span><span></span><span></span></div><div class="plot-shell" id="spectrum-plot"></div></div>
+            </div>
+        </details>
+
+        <details class="analysis-disclosure" data-analysis-panel="indices">
+            <summary>Indices</summary>
+            <div class="analysis-panel-body"><div class="index-grid" id="index-grid"></div></div>
+        </details>
+
+        <details class="analysis-disclosure" data-analysis-panel="bands">
+            <summary>Bands</summary>
+            <div class="analysis-panel-body"><div class="band-grid" id="band-grid"></div></div>
+        </details>
+
+        <details class="analysis-disclosure" id="coastal-analysis-panel" data-analysis-panel="analysis" hidden>
+            <summary>Coastal Analysis</summary>
+            <div class="analysis-panel-body coastal-panel-body">
+                <div class="coastal-actions">
+                    <button class="coastal-workflow-button" id="run-coastal-relative" type="button" data-coastal-workflow="relative">
+                        <strong>Coastal indicators</strong><span>Turbidity · CDOM · NDCI</span>
+                    </button>
+                    <button class="coastal-workflow-button" id="run-coastal-fnu" type="button" data-coastal-workflow="fnu">
+                        <strong>Quantitative FNU</strong><span>Dogliotti turbidity</span>
+                    </button>
+                </div>
+                <div class="coastal-status" id="coastal-status" role="status"></div>
+                <div class="coastal-results" id="coastal-results"></div>
+            </div>
+        </details>
+
+        <details class="analysis-disclosure" id="ghg-methane-panel" data-analysis-panel="analysis" hidden>
+            <summary>Methane Analysis</summary>
+            <div class="analysis-panel-body ghg-panel-body">
+                <div class="ghg-layer-actions" role="group" aria-label="Methane result layer">
+                    <button class="ghg-layer-button" type="button" data-ghg-layer="cwmf">CWMF</button>
+                    <button class="ghg-layer-button" type="button" data-ghg-layer="artifact">Artifact-suppressed</button>
+                    <button class="ghg-layer-button" id="ghg-reference-button" type="button" data-ghg-layer="comparison">Comparison</button>
+                </div>
+                <div class="ghg-status" id="ghg-status" role="status"></div>
+                <div class="analysis-loading-state" id="ghg-loading-state" hidden>
+                    <div><span class="loading-spinner"></span><strong id="ghg-loading-label">Loading methane scene</strong></div>
+                    <span class="loading-progress"><i></i></span>
+                    <span class="loading-skeleton-block"></span>
+                </div>
+                <section class="ghg-result" id="ghg-result" hidden>
+                    <header class="ghg-result-header">
+                        <h3 id="ghg-result-title"></h3>
+                        <button class="icon-button ghg-expand" id="ghg-expand-image" type="button" title="Open larger result" aria-label="Open larger methane result">↗</button>
+                    </header>
+                    <div class="ghg-image-shell">
+                        <img id="ghg-result-image" alt="Methane analysis result">
+                        <button class="coastal-overlay-button" id="ghg-overlay-button" type="button" aria-pressed="false"><svg><use href="#i-eye"></use></svg><span>Overlay</span></button>
+                    </div>
+                    <div class="ghg-legend" id="ghg-result-legend"></div>
+                    <dl class="ghg-metrics" id="ghg-result-metrics"></dl>
+                </section>
+                <section class="ghg-comparison" id="ghg-comparison" hidden>
+                    <header><strong>Independent CWMF</strong><span id="ghg-comparison-label">Published reference</span></header>
+                    <div class="ghg-comparison-grid">
+                        <div class="ghg-comparison-item">
+                            <button class="ghg-comparison-image" type="button" data-ghg-expand-side="cwmf"><img id="ghg-compare-cwmf" alt="Independent CWMF result"></button>
+                            <button class="coastal-overlay-button" type="button" data-ghg-overlay-side="cwmf" aria-pressed="false"><svg><use href="#i-eye"></use></svg><span>Overlay</span></button>
+                        </div>
+                        <div class="ghg-comparison-item">
+                            <button class="ghg-comparison-image" type="button" data-ghg-expand-side="reference"><img id="ghg-compare-reference" alt="Published methane reference"></button>
+                            <button class="coastal-overlay-button" type="button" data-ghg-overlay-side="reference" aria-pressed="false"><svg><use href="#i-eye"></use></svg><span>Overlay</span></button>
+                        </div>
+                    </div>
+                    <dl class="ghg-metrics ghg-comparison-metrics" id="ghg-comparison-metrics"></dl>
+                </section>
+            </div>
+        </details>
+    </aside>
+
+    <main id="map-col">
+        <div id="map-stage">
+            <div id="map"></div>
+            <div id="map-badge"><span id="map-badge-text">Select a scene from the catalogue</span></div>
+            <div id="basemap-toggle" role="group" aria-label="Basemap">
+                <button data-base="imagery" class="active" type="button">Imagery</button>
+                <button data-base="dark" type="button">Reference</button>
+            </div>
+            <!-- Runtime hooks for layer state. Kept hidden so no corner key is shown. -->
+            <div id="map-layer-key" hidden aria-hidden="true">
+                <span id="qa-map-key" hidden></span>
+                <span id="composite-map-key" hidden></span>
+                <span id="coastal-map-key" hidden></span>
+                <span id="ghg-map-key" hidden></span>
+            </div>
+            <div class="coastal-map-legend" id="coastal-map-legend" hidden></div>
+            <div class="ghg-map-legend" id="ghg-map-legend" hidden></div>
+        </div>
+    </main>
+
+    <aside id="inspector">
+        <div class="ins-header">
+            <div class="scene-identity"><span>Selected scene</span><h2 id="sp-id">—</h2><div class="ins-tags"><span id="sp-coll">—</span><span id="sp-quality"></span></div></div>
+            <button class="icon-button" id="sp-close" type="button" title="Close scene"><svg><use href="#i-close"></use></svg></button>
+        </div>
+        <div class="ins-tabs" role="tablist" aria-label="Scene workspace">
+            <button class="active" type="button" data-ins-tab="overview">Scene Overview</button>
+            <button type="button" data-ins-tab="compose">Compose</button>
+            <button type="button" data-ins-tab="export">Export</button>
+        </div>
+
+        <div class="ins-panel active" data-ins-panel="overview">
+            <section class="ins-section scene-record-section">
+                <h3>Scene record</h3>
+                <dl class="scene-record">
+                    <div><dt>Acquired</dt><dd id="sp-date">—</dd></div>
+                    <div class="location-row"><dt>Location</dt><dd id="sp-loc">—</dd></div>
+                    <div><dt>Cloud cover</dt><dd id="sp-cloud">—</dd></div>
+                    <div><dt>Sun elevation</dt><dd id="sp-sun">—</dd></div>
+                    <div><dt>Ground sampling</dt><dd id="sp-gsd">—</dd></div>
+                </dl>
+                <div class="sp-links" id="sp-links"></div>
+            </section>
+            <section class="ins-section scene-quality-section">
+                <h3>Scene quality</h3>
+                <div class="health-grid" id="scene-health"></div>
+                <div class="qa-row" id="scene-cautions"></div>
+                <div class="sample-diagnostics" id="sample-diagnostics" hidden>
+                    <h4>Current sample</h4>
+                    <div class="health-grid roi-summary" id="roi-summary"></div>
+                    <div class="qa-row" id="spectrum-qa"></div>
+                </div>
+            </section>
+            <section class="ins-section layer-section">
+                <h3>Layers</h3>
+                <div id="overlay-controls" class="layer-stack"></div>
+            </section>
+            <section class="ins-section related-section">
+                <div class="section-heading-row"><h3>Related scenes</h3><span id="coverage-count"></span></div>
+                <div class="coverage-list" id="coverage-list"><div class="grid-note">Sample a point or area to find overlapping dates.</div></div>
+            </section>
+        </div>
+
+        <div class="ins-panel" data-ins-panel="compose">
+            <section class="ins-section composer-form">
+                <div class="field-grid two">
+                    <label><span>Product</span><select id="composite-product" class="field-control"><option value="ortho_sr">Surface reflectance</option><option value="ortho_radiance">TOA radiance</option></select></label>
+                    <label><span>Preset</span><select id="composite-preset" class="field-control">
+                        <optgroup label="Three-band views">
+                            <option value="true-color">True colour</option><option value="vegetation">Vegetation</option><option value="agriculture">Agriculture</option>
+                            <option value="burn-scar">Burn scars</option><option value="urban">Urban</option><option value="geology">Geology</option><option value="snow-water">Snow and water</option>
+                        </optgroup>
+                        <optgroup label="Calculated indices"><option value="ndvi">NDVI</option><option value="ndwi">NDWI</option><option value="mndwi">MNDWI</option><option value="nbr">NBR</option></optgroup>
+                        <option value="custom">Custom</option>
+                    </select></label>
+                </div>
+                <div class="composer-bands" id="composite-bands">
+                    <label><span class="channel-r">R · nm</span><input type="number" id="composite-r" class="field-control" min="376" max="2500" value="665"></label>
+                    <label><span class="channel-g">G · nm</span><input type="number" id="composite-g" class="field-control" min="376" max="2500" value="560"></label>
+                    <label><span class="channel-b">B · nm</span><input type="number" id="composite-b" class="field-control" min="376" max="2500" value="490"></label>
+                </div>
+                <div class="field-grid two">
+                    <label><span>Low percentile</span><input type="number" id="composite-low" class="field-control" min="0" max="99" value="2"></label>
+                    <label><span>High percentile</span><input type="number" id="composite-high" class="field-control" min="1" max="100" value="98"></label>
+                </div>
+                <button class="primary-button full" id="render-composite" type="button">Render composite</button>
+                <div class="composite-shell">
+                    <div class="composite-loading" role="status" aria-label="Rendering composite preview">
+                        <span class="composite-spinner" aria-hidden="true"></span>
+                        <span class="sr-only">Rendering composite preview</span>
+                    </div>
+                    <img id="composite-preview" alt="Rendered band composite">
+                </div>
+                <div class="composite-actions">
+                    <button class="secondary-button" id="download-composite" type="button" disabled><svg><use href="#i-download"></use></svg> Download PNG</button>
+                    <button class="secondary-button" id="clear-composite" type="button" disabled>Clear</button>
+                </div>
+                <div class="spectrum-status" id="composite-status"></div>
+                <div class="coverage-note" id="composite-caption"></div>
+            </section>
+        </div>
+
+        <div class="ins-panel" data-ins-panel="export">
+            <section class="ins-section export-section">
+                <h3>Export analysis</h3>
+                <p class="export-intro">Save the active result or restore a previously exported sample.</p>
+                <button class="export-option" id="export-json" type="button"><strong>JSON report</strong><span>Scene, sample and derived metrics</span></button>
+                <button class="export-option" id="export-csv" type="button"><strong>CSV spectra</strong><span>Radiance and reflectance values</span></button>
+                <button class="export-option" id="export-png" type="button"><strong>PNG snapshot + sample</strong><span>Current plots and a re-loadable GeoJSON coordinate file</span></button>
+                <label class="export-option export-file-option" for="import-sample">
+                    <strong>Load sample file</strong>
+                    <span>Recreate point or area plots from exported GeoJSON</span>
+                    <input id="import-sample" type="file" accept=".geojson,.json,application/geo+json,application/json">
+                </label>
+                <button class="export-option" id="copy-link" type="button"><strong>Copy session link</strong><span>Current catalogue and scene state</span></button>
+                <button class="primary-button full" id="export-evidence" type="button">Download evidence package</button>
+            </section>
+        </div>
+    </aside>
+</div>
+
+<div id="tutorial-overlay" hidden>
+    <div class="tutorial-spotlight" aria-hidden="true"></div>
+    <section id="tutorial-dialog" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" aria-describedby="tutorial-body tutorial-tip" tabindex="-1" data-placement="center">
+        <div class="tutorial-dialog-header">
+            <p id="tutorial-eyebrow">Guided tutorial</p>
+            <button class="icon-button" id="tutorial-close" type="button" aria-label="Close tutorial">&times;</button>
+        </div>
+        <h2 id="tutorial-title"></h2>
+        <p id="tutorial-body" aria-live="polite" aria-atomic="true"></p>
+        <p id="tutorial-tip"></p>
+        <div class="tutorial-status">
+            <div id="tutorial-progress" role="progressbar" aria-label="Tutorial progress" aria-valuemin="1"></div>
+            <span id="tutorial-step-count" aria-live="polite"></span>
+        </div>
+        <div class="tutorial-actions">
+            <button class="secondary-button" id="tutorial-skip" type="button">Skip tutorial</button>
+            <div>
+                <button class="secondary-button" id="tutorial-back" type="button">Back</button>
+                <button class="primary-button" id="tutorial-next" type="button">Next</button>
+            </div>
+        </div>
+    </section>
+</div>
+
+<dialog id="scene-required-dialog" class="scene-required-dialog" aria-labelledby="scene-required-title">
+    <h2 id="scene-required-title">Select a scene first</h2>
+    <p>Choose a scene in Overview to open the analysis workspace.</p>
+    <button class="primary-button full" id="dialog-overview" type="button">Go to Overview</button>
+</dialog>
+
+<dialog id="figure-dialog" class="figure-dialog" aria-labelledby="figure-dialog-title">
+    <header><h2 id="figure-dialog-title">Analysis result</h2><button class="icon-button" id="figure-dialog-close" type="button" aria-label="Close enlarged result"><svg><use href="#i-close"></use></svg></button></header>
+    <img id="figure-dialog-image" alt="Enlarged analysis result" hidden>
+</dialog>
+
+<span id="st-cursor" hidden></span>
+<span id="st-system" hidden><span class="status-dot"></span><span id="st-system-text">Catalogue ready</span></span>
+<span id="sample-state" hidden></span>
+<span id="sampling-summary" hidden></span>
+<span id="composer-summary" hidden></span>
+<span id="composite-recipe-note" hidden></span>
+<span id="indices-summary" hidden></span>
+<span id="bands-summary" hidden></span>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="data/inventory_data.js"></script>
+<script src="app.js?v=guided-tutorial-20260827"></script>
+</body>
+</html>

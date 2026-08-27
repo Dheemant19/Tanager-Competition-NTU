@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "methane_window_nm": [
+    2104.0,
+    2459.0
+  ],
+  "hcmc_scene_id": "20250407_035509_25_4001",
+  "scenes": {
+    "20241004_081921_28_4001": {
+      "scene_id": "20241004_081921_28_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "As-Sa'duni, Khasham Subdistrict, Deir ez-Zor District, Deir ez-Zor Governorate, Syria",
+      "datetime": "2024-10-04T08:19:21.283920Z",
+      "quality_category": "test",
+      "collection_mode": "standard_sensitivity",
+      "bbox": [
+        40.19931555790359,
+        35.1517614491419,
+        40.513167367594555,
+        35.43527647962926
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20241004_081921_28_4001_basic_radiance_hdf5.h5",
+        "local_path": null
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20241004_081921_28_4001_ortho_ql_ch4.tif",
+        "local_path": null,
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20241004_081921_28_4001_ql_ch4_json.geojson",
+        "plume_local_path": null
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": false
+    },
+    "20250226_065447_19_4001": {
+      "scene_id": "20250226_065447_19_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Purovsky Rayon, Yamalo-Nenets Autonomous Okrug, Ural Federal District, Russia",
+      "datetime": "2025-02-26T06:54:47.197859Z",
+      "quality_category": "standard",
+      "collection_mode": "standard_sensitivity",
+      "bbox": [
+        76.44794348176923,
+        66.32733893711156,
+        77.14972482954676,
+        66.61462353566591
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250226_065447_19_4001_basic_radiance_hdf5.h5",
+        "local_path": null
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20250226_065447_19_4001_ortho_ql_ch4.tif",
+        "local_path": null,
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20250226_065447_19_4001_ql_ch4_json.geojson",
+        "plume_local_path": null
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": false
+    },
+    "20241121_183741_33_4001": {
+      "scene_id": "20241121_183741_33_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Casa Grande, Pinal County, Arizona, United States",
+      "datetime": "2024-11-21T18:37:41.349662Z",
+      "quality_category": "test",
+      "collection_mode": "maximum_sensitivity",
+      "bbox": [
+        -111.97834347267553,
+        32.6794276333223,
+        -111.62305795505833,
+        32.86348007412845
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20241121_183741_33_4001_basic_radiance_hdf5.h5",
+        "local_path": null
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20241121_183741_33_4001_ortho_ql_ch4.tif",
+        "local_path": null,
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20241121_183741_33_4001_ql_ch4_json.geojson",
+        "plume_local_path": null
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": false
+    },
+    "20250219_053251_31_4001": {
+      "scene_id": "20250219_053251_31_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Kusmunda, Katghora Tahsil, Korba, Chhattisgarh, 495454, India",
+      "datetime": "2025-02-19T05:32:51.310080Z",
+      "quality_category": "standard",
+      "collection_mode": "standard_sensitivity",
+      "bbox": [
+        82.54368810046248,
+        22.231597952731466,
+        82.78234878328922,
+        22.493381707878495
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250219_053251_31_4001_basic_radiance_hdf5.h5",
+        "local_path": null
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20250219_053251_31_4001_ortho_ql_ch4.tif",
+        "local_path": null,
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20250219_053251_31_4001_ql_ch4_json.geojson",
+        "plume_local_path": null
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": false
+    },
+    "20250423_134021_00_4001": {
+      "scene_id": "20250423_134021_00_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Brazil Offshore",
+      "datetime": "2025-04-23T13:40:21Z",
+      "quality_category": "standard",
+      "collection_mode": "glint",
+      "bbox": [
+        -42.9547740964792,
+        -25.418478833877003,
+        -42.650096246858844,
+        -25.057926160486236
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250423_134021_00_4001_basic_radiance_hdf5.h5",
+        "local_path": "data/ghg/ghg/20250423_134021_00_4001/basic_radiance_hdf5.h5"
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20250423_134021_00_4001_ortho_ql_ch4.tif",
+        "local_path": "data/ghg/ghg/20250423_134021_00_4001/ortho_ql_ch4.tif",
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20250423_134021_00_4001_ql_ch4_json.geojson",
+        "plume_local_path": "data/ghg/ghg/20250423_134021_00_4001/ql_ch4_json.geojson"
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": true
+    },
+    "20250423_134026_31_4001": {
+      "scene_id": "20250423_134026_31_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Brazil Offshore",
+      "datetime": "2025-04-23T13:40:26.310080Z",
+      "quality_category": "standard",
+      "collection_mode": "glint",
+      "bbox": [
+        -43.03083803278492,
+        -25.754846274505724,
+        -42.72616043410743,
+        -25.39523489919485
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250423_134026_31_4001_basic_radiance_hdf5.h5",
+        "local_path": "data/ghg/ghg/20250423_134026_31_4001/basic_radiance_hdf5.h5"
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20250423_134026_31_4001_ortho_ql_ch4.tif",
+        "local_path": "data/ghg/ghg/20250423_134026_31_4001/ortho_ql_ch4.tif",
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20250423_134026_31_4001_ql_ch4_json.geojson",
+        "plume_local_path": "data/ghg/ghg/20250423_134026_31_4001/ql_ch4_json.geojson"
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": true
+    },
+    "20250114_062056_92_4001": {
+      "scene_id": "20250114_062056_92_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Ghazi, Rojhan Tehsil, Rajanpur District, Dera Ghazi Khan Division, Punjab, Pakistan",
+      "datetime": "2025-01-14T06:20:56.925880Z",
+      "quality_category": "test",
+      "collection_mode": "standard_sensitivity",
+      "bbox": [
+        69.60383565011445,
+        27.88233505649382,
+        69.86323204744868,
+        28.160856253755565
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250114_062056_92_4001_basic_radiance_hdf5.h5",
+        "local_path": null
+      },
+      "published_reference": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ortho_ql_ch4/20250114_062056_92_4001_ortho_ql_ch4.tif",
+        "local_path": null,
+        "plume_url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/ql_ch4_json/20250114_062056_92_4001_ql_ch4_json.geojson",
+        "plume_local_path": null
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": false
+    },
+    "20250703_063928_86_4001": {
+      "scene_id": "20250703_063928_86_4001",
+      "collections": [
+        "GHG-plumes"
+      ],
+      "location_description": "Kurgancha, Baliqchi District, Andijan Region, 170300, Uzbekistan",
+      "datetime": "2025-07-03T06:39:28.862430Z",
+      "quality_category": "standard",
+      "collection_mode": "standard_sensitivity",
+      "bbox": [
+        71.61545618218229,
+        40.41481053383,
+        71.94739165110883,
+        40.690709577690974
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250703_063928_86_4001_basic_radiance_hdf5.h5",
+        "local_path": null
+      },
+      "published_reference": {
+        "url": null,
+        "local_path": null,
+        "plume_url": null,
+        "plume_local_path": null
+      },
+      "comparison_label": "Published Tanager CH4 quicklook",
+      "santos_reference": false
+    },
+    "20250407_035509_25_4001": {
+      "scene_id": "20250407_035509_25_4001",
+      "collections": [
+        "agriculture",
+        "urban"
+      ],
+      "location_description": "X\u00e3 B\u00ecnh H\u01b0ng, Ho Chi Minh City, Vietnam",
+      "datetime": "2025-04-07T03:55:09.265846Z",
+      "quality_category": "standard",
+      "collection_mode": "maximum_sensitivity",
+      "bbox": [
+        106.56597038950946,
+        10.586277284470714,
+        106.77946758310465,
+        10.77718728721292
+      ],
+      "basic_radiance": {
+        "url": "https://storage.googleapis.com/open-cogs/planet-stac/tanager1-release2-core-imagery/basic_radiance_hdf5/20250407_035509_25_4001_basic_radiance_hdf5.h5",
+        "local_path": "data/ghg/sea_study/inputs/hcmc/20250407_035509_25_4001/basic_radiance_hdf5.h5"
+      },
+      "published_reference": {
+        "url": null,
+        "local_path": "data/ghg/sea_study/inputs/hcmc/20250407_035509_25_4001/carbon_mapper/plume_B_concentration.tif",
+        "plume_url": null,
+        "plume_local_path": null
+      },
+      "comparison_label": "Carbon Mapper reference",
+      "santos_reference": false,
+      "reviewed_metrics_path": "data/ghg/sea_study/outputs/hcmc/20250407_035509_25_4001/analysis1_figure_metrics.json"
+    }
+  }
+}

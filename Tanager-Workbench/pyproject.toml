@@ -1,0 +1,14 @@
+[project]
+name = "tanager-workbench"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "h5py",
+    "numpy",
+    "pyproj",
+    "fsspec",
+    "requests",
+    "aiohttp",
+    "zarr",
+    "hitran-api",
+]
