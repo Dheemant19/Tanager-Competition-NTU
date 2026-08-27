@@ -54,7 +54,7 @@
             <button id="tab-analysis" type="button" role="tab" aria-selected="false" aria-controls="workspace">Analysis</button>
         </nav>
         <div class="header-actions">
-            <button class="secondary-button" id="tutorial-launcher" type="button" aria-haspopup="dialog" aria-controls="tutorial-dialog">Tutorial</button>
+            <button class="secondary-button" id="tutorial-launcher" type="button" aria-haspopup="dialog" aria-controls="tutorial-dialog">Start tutorial</button>
             <div class="session-metrics">
                 <span class="utc"><strong id="utc-clock">--:--:--</strong> UTC</span>
                 <span><strong id="s-filt">0</strong> visible</span>
@@ -398,6 +398,28 @@
     </aside>
 </div>
 
+<dialog id="welcome-dialog" class="welcome-dialog" aria-labelledby="welcome-title">
+    <button class="icon-button welcome-close" id="welcome-close" type="button" aria-label="Close welcome message">&times;</button>
+    <p class="welcome-eyebrow">WELCOME TO TANAGER WORKBENCH</p>
+    <h2 id="welcome-title">A quick way to get started</h2>
+    <p>Watch the short walkthrough, or follow a hands-on guide in the app.</p>
+    <div class="welcome-actions">
+        <button class="secondary-button" id="watch-tutorial-video" type="button">Watch video</button>
+        <button class="primary-button" id="follow-tutorial" type="button">Follow tutorial</button>
+    </div>
+</dialog>
+
+<dialog id="tutorial-video-dialog" class="tutorial-video-dialog" aria-labelledby="tutorial-video-title">
+    <header>
+        <div><p class="welcome-eyebrow">VIDEO WALKTHROUGH</p><h2 id="tutorial-video-title">Tanager Workbench tutorial</h2></div>
+        <button class="icon-button" id="tutorial-video-close" type="button" aria-label="Close video">&times;</button>
+    </header>
+    <video id="tutorial-video" controls preload="metadata">
+        <source src="Tanager_Demo.mp4" type="video/mp4">
+        Your browser does not support embedded video.
+    </video>
+</dialog>
+
 <div id="tutorial-overlay" hidden>
     <div class="tutorial-spotlight" aria-hidden="true"></div>
     <section id="tutorial-dialog" role="dialog" aria-modal="true" aria-labelledby="tutorial-title" aria-describedby="tutorial-body tutorial-tip" tabindex="-1" data-placement="center">
@@ -448,6 +470,6 @@
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="data/inventory_data.js"></script>
-<script src="app.js?v=guided-tutorial-20260827"></script>
+<script src="app.js?v=guided-tutorial-20260828"></script>
 </body>
 </html>

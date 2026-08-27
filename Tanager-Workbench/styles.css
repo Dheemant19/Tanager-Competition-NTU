@@ -3066,21 +3066,23 @@ body { background: var(--paper); }
 }
 
 #tutorial-launcher {
-    min-height: 30px;
+    min-height: 38px;
     flex: 0 0 auto;
-    padding: 0 10px;
-    color: var(--panel);
-    background: transparent;
-    border-color: var(--accent);
-    border-radius: 2px;
-    font-size: 12px;
-    letter-spacing: .01em;
+    padding: 0 15px;
+    color: #fff;
+    background: #2f7655;
+    border-color: #2f7655;
+    border-radius: 5px;
+    box-shadow: 0 2px 7px rgba(21, 77, 52, .28);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .02em;
 }
 
 #tutorial-launcher:hover {
-    color: var(--panel);
-    background: var(--accent);
-    border-color: var(--accent);
+    color: #fff;
+    background: #235d41;
+    border-color: #235d41;
 }
 
 #tutorial-launcher:focus-visible {
@@ -3090,6 +3092,40 @@ body { background: var(--paper); }
 
 #tutorial-launcher:active:not(:disabled) { transform: translateY(1px); }
 #tutorial-launcher:disabled { color: var(--line-300); border-color: var(--chrome-700); cursor: not-allowed; }
+
+.welcome-dialog,
+.tutorial-video-dialog {
+    width: min(500px, calc(100vw - 32px));
+    padding: 28px;
+    color: var(--ink-900);
+    background: var(--panel);
+    border: 1px solid var(--line-300);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(11, 29, 21, .32);
+}
+
+.welcome-dialog[open] {
+    animation: welcome-pop-in .38s cubic-bezier(.16, 1, .3, 1) both;
+}
+
+@keyframes welcome-pop-in {
+    from { opacity: 0; transform: translateY(10px) scale(.82); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.welcome-dialog::backdrop,
+.tutorial-video-dialog::backdrop { background: rgba(10, 23, 17, .56); backdrop-filter: blur(3px); }
+.welcome-dialog { position: relative; }
+.welcome-close { position: absolute; top: 12px; right: 12px; font-size: 22px; }
+.welcome-eyebrow { margin: 0 0 8px; color: #2f7655; font: 700 11px/1.2 var(--font-mono); letter-spacing: .08em; }
+.welcome-dialog h2,
+.tutorial-video-dialog h2 { margin: 0; color: var(--ink-900); font-size: 25px; line-height: 1.15; }
+.welcome-dialog > p:not(.welcome-eyebrow) { margin: 14px 36px 24px 0; color: var(--ink-700); font-size: 15px; line-height: 1.5; }
+.welcome-actions { display: flex; gap: 10px; }
+.welcome-actions button { min-height: 42px; flex: 1; font-weight: 700; }
+.tutorial-video-dialog { width: min(900px, calc(100vw - 32px)); }
+.tutorial-video-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 16px; }
+.tutorial-video-dialog video { display: block; width: 100%; max-height: min(68vh, 620px); background: #07120d; border-radius: 7px; }
 
 #tutorial-overlay {
     position: fixed;
@@ -3136,8 +3172,8 @@ body.tutorial-active .tutorial-target {
     color: var(--ink-900);
     background: var(--panel);
     border: 1px solid var(--line-300);
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(20, 31, 39, .24);
+    border-radius: 10px;
+    box-shadow: 0 14px 40px rgba(20, 31, 39, .3);
     transform: translate(-50%, -50%);
     transition: opacity .18s cubic-bezier(.19, 1, .22, 1),
                 transform .18s cubic-bezier(.19, 1, .22, 1);
@@ -3217,8 +3253,9 @@ body.tutorial-active .tutorial-target {
 
 #tutorial-eyebrow {
     margin: 0;
-    color: var(--accent);
-    font: 600 11px/1.2 var(--font-mono);
+    color: #2f7655;
+    font: 700 11px/1.2 var(--font-mono);
+    letter-spacing: .07em;
 }
 
 #tutorial-close {
@@ -3260,9 +3297,9 @@ body.tutorial-active .tutorial-target {
     margin: 12px 0 0;
     padding: 8px 10px;
     color: var(--ink-700);
-    background: var(--accent-pale);
-    border: 1px solid var(--line-300);
-    border-radius: 2px;
+    background: #eef7f1;
+    border: 1px solid #c8dfd0;
+    border-radius: 6px;
     font-size: 12px;
     line-height: 1.45;
 }
@@ -3288,7 +3325,7 @@ body.tutorial-active .tutorial-target {
     content: "";
     position: absolute;
     inset: 0;
-    background: var(--accent);
+    background: #2f7655;
     transform: scaleX(var(--tutorial-progress, 0));
     transform-origin: left center;
     transition: transform .18s cubic-bezier(.19, 1, .22, 1);
@@ -3440,6 +3477,7 @@ body.tutorial-active .tutorial-target {
     #tutorial-dialog button {
         transition: none;
     }
+    .welcome-dialog[open] { animation: none; }
 }
 
 @media (forced-colors: active) {

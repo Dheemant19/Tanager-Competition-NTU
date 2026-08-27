@@ -4001,6 +4001,13 @@ const tutorialCloseButton = document.getElementById('tutorial-close');
 const tutorialBackButton = document.getElementById('tutorial-back');
 const tutorialNextButton = document.getElementById('tutorial-next');
 const tutorialSkipButton = document.getElementById('tutorial-skip');
+const welcomeDialog = document.getElementById('welcome-dialog');
+const welcomeCloseButton = document.getElementById('welcome-close');
+const watchTutorialVideoButton = document.getElementById('watch-tutorial-video');
+const followTutorialButton = document.getElementById('follow-tutorial');
+const tutorialVideoDialog = document.getElementById('tutorial-video-dialog');
+const tutorialVideo = document.getElementById('tutorial-video');
+const tutorialVideoCloseButton = document.getElementById('tutorial-video-close');
 
 const tutorialState = {
     active: false,
@@ -4027,8 +4034,19 @@ function tutorialEnsureScene() {
     return true;
 }
 
-function tutorialOpenAnalysis(panelName='browse') {
-    if (!tutorialEnsureScene()) return;
+function tutorialCoastalScene() {
+    return SCENES.find(scene => scene.collections?.includes('coastal-water-bodies')) || null;
+}
+
+function tutorialEnsureCoastalScene() {
+    const scene = tutorialCoastalScene();
+    if (!scene) return false;
+    if (selectedScene?.item_id !== scene.item_id) showScene(scene, COLORS[scene.collection] || '#39705b');
+    return true;
+}
+
+function tutorialOpenAnalysis(panelName='browse', { coastal=false }={}) {
+    if (coastal ? !tutorialEnsureCoastalScene() : !tutorialEnsureScene()) return;
     setWorkspaceTab('analysis', { promptForScene: false });
     inspector.classList.add('open');
     const panel = document.querySelector(`[data-analysis-panel="${panelName}"]`);
@@ -4045,7 +4063,7 @@ function tutorialOpenInspectorTab(name) {
 }
 
 function tutorialOpenConditionalAnalysis(id) {
-    tutorialOpenAnalysis('browse');
+    tutorialOpenAnalysis('browse', { coastal: id === 'coastal-analysis-panel' });
     const panel = document.getElementById(id);
     if (panel && !panel.hidden) panel.open = true;
 }
@@ -4056,239 +4074,29 @@ function tutorialConditionalPanel(id) {
 }
 
 const TUTORIAL_STEPS = [
-    {
-        eyebrow: 'Workbench orientation',
-        title: 'Start with the whole workspace',
-        body: 'Tanager Workbench brings the scene catalogue, map, selected scene inspector, and analysis tools into one workspace. This tour points out what each area does without running an analysis or downloading anything.',
-        tip: 'You can leave at any time with Escape, Close, or Skip tutorial.',
-        target: '#workspace',
-        placement: 'center',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Workspaces',
-        title: 'Move between Overview and Analysis',
-        body: 'The Overview tab is for finding scenes and reading the map. The Analysis tab is for sampling a selected scene, inspecting spectra, composing imagery, and exporting work. Analysis needs a selected scene.',
-        target: '.workspace-tabs',
-        placement: 'bottom',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Catalogue search',
-        title: 'Search scenes and locations',
-        body: 'Search matches scene identifiers and location words. Press the slash key from anywhere outside a form field to focus this search. Press Enter in the search field to open the first matching scene.',
-        tip: 'The slash shortcut is useful when your hands are already on the keyboard.',
-        target: '.global-search',
-        placement: 'bottom',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Catalogue status',
-        title: 'Read visible and total scene counts',
-        body: 'Visible is the number of scenes that match the current search and filters. Scenes is the full catalogue count. Comparing these counts shows how much the current constraints have narrowed the catalogue.',
-        target: '.session-metrics',
-        placement: 'bottom',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Catalogue dock',
-        title: 'Open or collapse the catalogue',
-        body: 'The Catalogue rail opens the dock when it is collapsed. The collapse control in the Catalogue header hides the scene list and makes more room for the map. Your filters remain in place when the dock is collapsed.',
-        target: '.catalogue-header',
-        placement: 'right',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Collection filters',
-        title: 'Choose source collections',
-        body: 'Collection checkboxes include or exclude groups of scenes. The count bars show the relative size of each collection. You can combine collections before using the other filters.',
-        target: '#coll-list',
-        placement: 'right',
-        before: () => tutorialOpenOverview({ filters: true }),
-    },
-    {
-        eyebrow: 'Scene filters',
-        title: 'Constrain measurements, dates, and mode',
-        body: 'Maximum cloud and maximum haze limit obscured scenes. Minimum sun keeps scenes with enough solar elevation. Maximum off-nadir limits the viewing angle away from straight down. From and To set the acquisition date range, and Collection mode selects an imaging mode.',
-        tip: 'The live summary describes every active constraint.',
-        target: '#filter-subdock',
-        placement: 'right',
-        before: () => tutorialOpenOverview({ filters: true }),
-    },
-    {
-        eyebrow: 'Boundaries and reset',
-        title: 'Show reference boundaries or start over',
-        body: 'Reference boundaries draw the Equatorial belt, Tropical belt, and Southeast Asia on the map. Reset filters restores all collections, numeric limits, dates, collection mode, search, and scene sorting to their defaults.',
-        target: '#btn-reset',
-        placement: 'right',
-        before: () => tutorialOpenOverview({ filters: true }),
-    },
-    {
-        eyebrow: 'Scene results',
-        title: 'Sort and scan the scene list',
-        body: 'Newest sorts by acquisition date. Least cloud sorts by cloud percentage. The scene list shows each scene identifier, date, cloud amount, collection, location, and review flags so you can compare candidates quickly.',
-        target: '#scene-results',
-        placement: 'right',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Map',
-        title: 'Read locations and change the basemap',
-        body: 'Map markers locate the scenes that remain visible. The basemap control switches between Imagery and Reference backgrounds. Reference boundaries and selected scene layers are drawn above the chosen basemap.',
-        target: '#map-stage',
-        placement: 'left',
-        before: () => {
-            tutorialOpenOverview({ filters: false, scenes: window.innerWidth > 760 });
-            if (window.innerWidth <= 760) setScenesOpen(false);
-        },
-    },
-    {
-        eyebrow: 'Scene selection',
-        title: 'Select a scene for detailed work',
-        body: 'Choose a row in the scene list or a marker on the map to select that scene. Selection opens the scene inspector, frames its footprint on the map, and makes the Analysis workspace available.',
-        target: '#scene-table',
-        placement: 'right',
-        before: () => tutorialOpenOverview({ filters: false }),
-    },
-    {
-        eyebrow: 'Selected scene',
-        title: 'Read the scene overview record',
-        body: 'Scene Overview identifies the selected scene and records its acquisition time, location, cloud cover, sun elevation, ground sampling distance, collections, quality category, and available source links.',
-        target: '.scene-record-section',
-        placement: 'left',
-        before: () => tutorialOpenInspectorTab('overview'),
-    },
-    {
-        eyebrow: 'Scene context',
-        title: 'Check quality, layers, and related scenes',
-        body: 'Scene quality reports availability and cautions before interpretation. Layers controls available map overlays. Related scenes lists other dates that cover a sampled point or area, which supports comparison through time.',
-        target: '[data-ins-panel="overview"]',
-        placement: 'left',
-        before: () => tutorialOpenInspectorTab('overview'),
-    },
-    {
-        eyebrow: 'Analysis tools',
-        title: 'Browse the map or sample one point',
-        body: 'Browse keeps map navigation active. Point sample arms a single map click and requests a spectrum for that location only when you click the map. A spectrum is a set of measured values across wavelengths.',
-        target: '[data-analysis-panel="browse"]',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('browse'),
-    },
-    {
-        eyebrow: 'Area sampling',
-        title: 'Choose one of four area shapes',
-        body: 'Square, Rectangle, and Pentagon create regular areas by pressing and dragging on the map. Custom lets you draw a freeform polygon point by point. An area sample summarizes all valid pixels inside the completed shape.',
-        target: '.area-tools',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('browse'),
-    },
-    {
-        eyebrow: 'Comparisons',
-        title: 'Compare points or areas',
-        body: 'Compare Points collects spectra from several map clicks. Compare Area collects several shaped regions. Each mode keeps the samples together in the spectrum plot so their curves can be compared.',
-        target: '.compare-actions',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('browse'),
-    },
-    {
-        eyebrow: 'Spectrum product',
-        title: 'Choose the measurement product',
-        body: 'Product chooses surface reflectance or top of atmosphere radiance when the selected scene provides it. Surface reflectance estimates the fraction of light reflected by the ground. Top of atmosphere radiance is the light measured at the sensor.',
-        target: '#spectrum-product',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('spectrum'),
-    },
-    {
-        eyebrow: 'Wavelength range',
-        title: 'Focus the spectral window',
-        body: 'The two wavelength handles set the minimum and maximum shown in the plot. Wavelength is measured in nm, meaning nanometres. Reset range restores the full visible, near infrared, and shortwave infrared span.',
-        target: '#spectral-range',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('spectrum'),
-    },
-    {
-        eyebrow: 'Spectrum workspace',
-        title: 'Undo, clear, and read the plot',
-        body: 'Undo removes the most recent point or compared area. Clear area removes the active shape. Clear spectrum removes all collected samples. The spectrum plot below draws each available product only after a real point or area result exists.',
-        target: '[data-analysis-panel="spectrum"]',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('spectrum'),
-    },
-    {
-        eyebrow: 'Derived indices',
-        title: 'Interpret spectral indices',
-        body: 'Indices shows calculated ratios such as vegetation, water, and burn indicators when a sample is available. An index combines selected wavelengths into one value that can make a material or condition easier to compare.',
-        target: '[data-analysis-panel="indices"]',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('indices'),
-    },
-    {
-        eyebrow: 'Band readout',
-        title: 'Inspect individual bands',
-        body: 'Bands lists measured values near standard wavelengths for the chosen product. Use it to connect a point on the spectrum plot with its exact band value and wavelength.',
-        target: '[data-analysis-panel="bands"]',
-        placement: 'right',
-        before: () => tutorialOpenAnalysis('bands'),
-    },
-    {
-        eyebrow: 'Conditional coastal tools',
-        title: 'Use coastal analysis on matching scenes',
-        body: 'Coastal Analysis appears only for scenes in the coastal water collection. Coastal indicators reports turbidity, colored dissolved organic matter, and NDCI chlorophyll response. Quantitative FNU estimates turbidity in Formazin Nephelometric Units. Results can also be shown as map overlays.',
-        tip: 'If the selected scene is not coastal, this step points to the Analysis tools dock where the panel would appear.',
-        target: () => tutorialConditionalPanel('coastal-analysis-panel'),
-        placement: 'right',
-        before: () => tutorialOpenConditionalAnalysis('coastal-analysis-panel'),
-    },
-    {
-        eyebrow: 'Conditional methane tools',
-        title: 'Use methane analysis on matching scenes',
-        body: 'Methane Analysis appears only for supported methane scenes. CWMF is the primary methane retrieval result. The CWMF, Artifact-suppressed, and Comparison buttons switch between available result views. Overlay places a result on the map, and Comparison can show the independent result beside a published reference.',
-        tip: 'If the selected scene has no methane product, this step points to the Analysis tools dock where the panel would appear.',
-        target: () => tutorialConditionalPanel('ghg-methane-panel'),
-        placement: 'right',
-        before: () => tutorialOpenConditionalAnalysis('ghg-methane-panel'),
-    },
-    {
-        eyebrow: 'Compose setup',
-        title: 'Build a custom image recipe',
-        body: 'Compose Product chooses surface reflectance or top of atmosphere radiance. Preset supplies common three-band views and calculated indices. Custom wavelengths assign exact red, green, and blue channels. Low and High percentile stretch set the brightness range while reducing the effect of extreme pixels.',
-        target: '.composer-form',
-        placement: 'left',
-        before: () => tutorialOpenInspectorTab('compose'),
-    },
-    {
-        eyebrow: 'Compose output',
-        title: 'Render, download, or clear a composite',
-        body: 'Render composite sends the current recipe only when you choose it. Download PNG saves a completed preview. Clear removes the preview and its map layer. The tutorial does not render, download, or clear anything.',
-        target: '[data-ins-panel="compose"]',
-        placement: 'left',
-        before: () => tutorialOpenInspectorTab('compose'),
-    },
-    {
-        eyebrow: 'Export formats',
-        title: 'Save JSON, CSV, or PNG output',
-        body: 'JSON report saves scene, sample, and derived metrics in structured text. CSV spectra saves wavelength values in a table. PNG snapshot and sample saves the current plot image plus a reusable GeoJSON coordinate file. GeoJSON is a text format for map geometry.',
-        target: '.export-section',
-        placement: 'left',
-        before: () => tutorialOpenInspectorTab('export'),
-    },
-    {
-        eyebrow: 'Restore and share',
-        title: 'Import a sample or package the session',
-        body: 'Load sample file restores an exported point or area without drawing it again. Copy session link captures current catalogue and scene state. Download evidence package bundles results, metadata, geometry, and a reproduction script for review.',
-        target: '[data-ins-panel="export"]',
-        placement: 'left',
-        before: () => tutorialOpenInspectorTab('export'),
-    },
-    {
-        eyebrow: 'Tutorial complete',
-        title: 'Explore with the workflow in view',
-        body: 'You now know how to find a scene, inspect its context, sample spectral data, compare results, compose imagery, and export evidence. Select Finish to return to the workbench.',
-        tip: 'Choose Tutorial in the header whenever you want to start again from the first step.',
-        target: null,
-        placement: 'center',
-        before: () => {},
-    },
+    { eyebrow: 'Orientation', title: 'Welcome to the workbench', body: 'Overview finds scenes. Analysis explores a selected scene.', tip: 'Use Escape, Close, or Skip anytime.', target: '.workspace-tabs', placement: 'bottom', before: () => tutorialOpenOverview({ filters: false }) },
+    { eyebrow: 'Search and counts', title: 'Find scenes quickly', body: 'Search by scene ID or place. Visible shows filtered scenes; Scenes shows the total.', target: '.global-search', placement: 'bottom', before: () => tutorialOpenOverview({ filters: false }) },
+    { eyebrow: 'Catalogue dock', title: 'Open more map space', body: 'Collapse the catalogue when you want a larger map.', target: '.catalogue-header', placement: 'right', before: () => tutorialOpenOverview({ filters: false }) },
+    { eyebrow: 'Collections', title: 'Choose scene collections', body: 'Use these checkboxes to include the collections you need.', target: '#coll-list', placement: 'right', before: () => tutorialOpenOverview({ filters: true }) },
+    { eyebrow: 'Filters and reset', title: 'Narrow or reset the catalogue', body: 'Filter by conditions, date, and mode. Add boundaries or restore defaults.', target: '#filter-subdock', placement: 'right', before: () => tutorialOpenOverview({ filters: true }) },
+    { eyebrow: 'Scenes and map', title: 'Choose a scene', body: 'Sort the list, select a row or marker, and switch the basemap if needed.', target: '#map-stage', placement: 'left', before: () => { tutorialOpenOverview({ filters: false, scenes: window.innerWidth > 760 }); if (window.innerWidth <= 760) setScenesOpen(false); } },
+    { eyebrow: 'Scene selection', title: 'A coastal scene is selected', body: 'This guide chooses a coastal-water scene. Check its time, location, quality, and sources here.', target: '.scene-record-section', placement: 'left', before: () => { tutorialEnsureCoastalScene(); tutorialOpenInspectorTab('overview'); } },
+    { eyebrow: 'Scene context', title: 'Check quality and layers', body: 'Review cautions, control layers, and find related scenes.', target: '[data-ins-panel="overview"]', placement: 'left', before: () => tutorialOpenInspectorTab('overview') },
+    { eyebrow: 'Analysis tools', title: 'Choose how to analyse', body: 'Browse moves the map. Point samples one location.', target: '[data-analysis-panel="browse"]', placement: 'right', before: () => tutorialOpenAnalysis('browse', { coastal: true }) },
+    { eyebrow: 'Area sampling', title: 'Sample an area', body: 'Draw a square, rectangle, pentagon, or custom polygon.', target: '.area-tools', placement: 'right', before: () => tutorialOpenAnalysis('browse', { coastal: true }) },
+    { eyebrow: 'Comparisons', title: 'Compare samples', body: 'Collect multiple points or areas to compare their spectra.', target: '.compare-actions', placement: 'right', before: () => tutorialOpenAnalysis('browse', { coastal: true }) },
+    { eyebrow: 'Coastal analysis', title: 'Explore coastal products', body: 'Use turbidity, CDOM, chlorophyll, and FNU tools for this scene.', target: '#coastal-analysis-panel', placement: 'right', before: () => tutorialOpenConditionalAnalysis('coastal-analysis-panel') },
+    { eyebrow: 'Methane analysis', title: 'Use methane tools when available', body: 'Supported scenes offer CWMF, cleaned, and comparison views.', target: () => tutorialConditionalPanel('ghg-methane-panel'), placement: 'right', before: () => tutorialOpenConditionalAnalysis('ghg-methane-panel') },
+    { eyebrow: 'Point sampling', title: 'A point is sampled for you', body: 'We selected a point inside the scene and loaded both spectrum products.', tip: 'After the tour, choose Point and click anywhere inside a scene.', target: '#map-stage', placement: 'left', before: async () => { tutorialOpenAnalysis('spectrum', { coastal: true }); const scene = selectedScene; if (scene && !lastSpectrumData) await sampleSpectrum(L.latLng(scene.centroid_lat, scene.centroid_lon)); } },
+    { eyebrow: 'Surface reflectance', title: 'Read reflected light', body: 'Surface reflectance estimates light reflected by ground or water.', target: '#spectrum-plot', placement: 'right', before: () => { tutorialOpenAnalysis('spectrum', { coastal: true }); spectrumProduct.value = 'ortho_sr'; spectrumProduct.dispatchEvent(new Event('change')); } },
+    { eyebrow: 'TOA radiance', title: 'Read sensor light', body: 'TOA radiance is the light measured at the sensor.', target: '#spectrum-product', placement: 'right', before: () => { tutorialOpenAnalysis('spectrum', { coastal: true }); spectrumProduct.value = 'ortho_radiance'; spectrumProduct.dispatchEvent(new Event('change')); } },
+    { eyebrow: 'Spectrum controls', title: 'Focus and manage the plot', body: 'Drag the wavelength range, then undo or clear samples when needed.', target: '[data-analysis-panel="spectrum"]', placement: 'right', before: () => tutorialOpenAnalysis('spectrum', { coastal: true }) },
+    { eyebrow: 'Indices', title: 'Interpret spectral indices', body: 'Indices summarize vegetation, water, and burn signals.', target: '[data-analysis-panel="indices"]', placement: 'right', before: () => tutorialOpenAnalysis('indices', { coastal: true }) },
+    { eyebrow: 'Bands', title: 'Inspect band values', body: 'See values at standard wavelengths for the selected product.', target: '[data-analysis-panel="bands"]', placement: 'right', before: () => tutorialOpenAnalysis('bands', { coastal: true }) },
+    { eyebrow: 'Compose', title: 'Build an image composite', body: 'Choose a preset or set red, green, and blue wavelengths.', target: '.composer-form', placement: 'left', before: () => tutorialOpenInspectorTab('compose') },
+    { eyebrow: 'Composite output', title: 'Render and save composites', body: 'Render a preview, download it, or clear it from the map.', target: '[data-ins-panel="compose"]', placement: 'left', before: () => tutorialOpenInspectorTab('compose') },
+    { eyebrow: 'Export', title: 'Save and share work', body: 'Export reports, spectra, plots, samples, or an evidence package.', target: '[data-ins-panel="export"]', placement: 'left', before: () => tutorialOpenInspectorTab('export') },
+    { eyebrow: 'Complete', title: 'Ready to explore', body: 'Return to this guide with the green Start tutorial button.', target: '#tutorial-launcher', placement: 'bottom', before: () => {} },
 ];
 
 function tutorialTargetElement(step) {
@@ -4548,3 +4356,25 @@ tutorialNextButton.addEventListener('click', () => {
     tutorialState.index += 1;
     showTutorialStep();
 });
+
+function closeTutorialVideo() {
+    tutorialVideo.pause();
+    tutorialVideoDialog.close();
+}
+
+welcomeCloseButton.addEventListener('click', () => welcomeDialog.close());
+followTutorialButton.addEventListener('click', () => {
+    welcomeDialog.close();
+    startTutorial();
+});
+watchTutorialVideoButton.addEventListener('click', () => {
+    welcomeDialog.close();
+    tutorialVideoDialog.showModal();
+    tutorialVideo.play().catch(() => {});
+});
+tutorialVideoCloseButton.addEventListener('click', closeTutorialVideo);
+tutorialVideoDialog.addEventListener('close', () => tutorialVideo.pause());
+
+window.addEventListener('load', () => {
+    welcomeDialog.showModal();
+}, { once: true });
