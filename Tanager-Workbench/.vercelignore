@@ -5,3 +5,6 @@ __pycache__/
 
 # Included in the repository for local development, but not required in the deployment bundle
 README.md
+
+# Kept locally for development; production streams the tutorial from Google Drive.
+Tanager_Demo.mp4
