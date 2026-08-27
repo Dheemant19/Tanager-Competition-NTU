@@ -437,6 +437,8 @@ const coastalStatus = document.getElementById('coastal-status');
 const coastalResults = document.getElementById('coastal-results');
 const coastalMapLegend = document.getElementById('coastal-map-legend');
 const ghgMethanePanel = document.getElementById('ghg-methane-panel');
+const ghgLayerActions = document.getElementById('ghg-layer-actions');
+const ghgNoPlume = document.getElementById('ghg-no-plume');
 const ghgLayerButtons = [...document.querySelectorAll('[data-ghg-layer]')];
 const ghgReferenceButton = document.getElementById('ghg-reference-button');
 const ghgStatus = document.getElementById('ghg-status');
@@ -3076,12 +3078,19 @@ function setGhgLoading(loading, label='Loading methane scene') {
 
 function syncGhgAnalysis(row=null) {
     const methaneEligible = isGhgMethaneScene(row);
+    const noPublishedPlume = new Set([
+        '20241121_183741_33_4001', // USA
+        '20250219_053251_31_4001', // India
+        '20250703_063928_86_4001'  // Uzbekistan
+    ]).has(row?.item_id);
     ghgRequestId++;
     clearGhgMapOverlay();
     currentGhgLayer = null;
     currentGhgData = null;
     ghgMethanePanel.hidden = !methaneEligible;
     ghgMethanePanel.open = false;
+    ghgLayerActions.hidden = noPublishedPlume;
+    ghgNoPlume.hidden = !noPublishedPlume;
     setGhgLoading(false);
     ghgStatus.textContent = '';
     ghgStatus.className = 'ghg-status';
@@ -3090,7 +3099,7 @@ function syncGhgAnalysis(row=null) {
     const referenceAvailable = methaneEligible && hasPublishedGhgReference(row);
     ghgReferenceButton.disabled = !referenceAvailable;
     ghgLayerButtons.forEach(button => {
-        if (button.dataset.ghgLayer !== 'comparison') button.disabled = !methaneEligible;
+        if (button.dataset.ghgLayer !== 'comparison') button.disabled = !methaneEligible || noPublishedPlume;
         button.classList.remove('active');
     });
 }

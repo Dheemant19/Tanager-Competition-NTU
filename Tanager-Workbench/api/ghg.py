@@ -703,6 +703,23 @@ def create_methane_response(scene_id: str, layer: str, max_size: int) -> dict:
     if cache_path.exists():
         cached = json.loads(cache_path.read_text(encoding="utf-8"))
         cached["source"] = "precomputed_hdf5"
+        if cached.get("qa", {}).get("retrieval_status") == "insufficient_valid_background":
+            reference = reference_response(scene_id, scene_meta, max_size)
+            product = reference["product"]
+            cached = {
+                "scene_id": scene_id,
+                "workflow": "methane",
+                "layer": layer,
+                "source": "published_tanager_fallback",
+                "evidence_type": "published_provider_product",
+                "product": {
+                    **product,
+                    "key": layer,
+                    "label": "Published Tanager CH4 plume quicklook (CWMF unavailable)",
+                },
+                "qa": {**cached.get("qa", {}), "retrieval_status": "published_reference_fallback"},
+                "comparison_available": True,
+            }
         if review is not None:
             cached["review"] = review
         return cached

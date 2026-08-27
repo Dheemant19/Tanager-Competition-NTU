@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
-    <link rel="stylesheet" href="styles.css?v=balanced-header-search-20260828">
+    <link rel="stylesheet" href="styles.css?v=ghg-no-plume-20260828">
 </head>
 <body>
 <svg class="icon-sprite" aria-hidden="true">
@@ -236,12 +236,16 @@
         <details class="analysis-disclosure" id="ghg-methane-panel" data-analysis-panel="analysis" hidden>
             <summary>Methane Analysis</summary>
             <div class="analysis-panel-body ghg-panel-body">
-                <div class="ghg-layer-actions" role="group" aria-label="Methane result layer">
+                <div class="ghg-layer-actions" id="ghg-layer-actions" role="group" aria-label="Methane result layer">
                     <button class="ghg-layer-button" type="button" data-ghg-layer="cwmf">CWMF</button>
                     <button class="ghg-layer-button" type="button" data-ghg-layer="artifact">Artifact-suppressed</button>
                     <button class="ghg-layer-button" id="ghg-reference-button" type="button" data-ghg-layer="comparison">Comparison</button>
                 </div>
                 <div class="ghg-status" id="ghg-status" role="status"></div>
+                <section class="ghg-no-plume" id="ghg-no-plume" hidden>
+                    <h3>No CH4 plume detected by Tanager</h3>
+                    <p>This scene has no published Tanager methane plume record.</p>
+                </section>
                 <div class="analysis-loading-state" id="ghg-loading-state" hidden>
                     <div><span class="loading-spinner"></span><strong id="ghg-loading-label">Loading methane scene</strong></div>
                     <span class="loading-progress"><i></i></span>
@@ -474,6 +478,6 @@
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="data/inventory_data.js"></script>
-<script src="app.js?v=precomputed-ghg-20260828"></script>
+<script src="app.js?v=ghg-no-plume-20260828"></script>
 </body>
 </html>
