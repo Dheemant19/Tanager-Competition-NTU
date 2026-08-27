@@ -3408,6 +3408,15 @@ body.tutorial-active .tutorial-target {
     .session-metrics { display: none; }
 }
 
+@media (min-width: 681px) and (max-width: 980px) {
+    .global-search {
+        width: 220px;
+        max-width: 220px;
+        justify-self: start;
+        margin-left: -10px;
+    }
+}
+
 @media (max-width: 680px) {
     .menu-row {
         grid-template-columns: minmax(28px, 1fr) minmax(136px, 154px) auto;
