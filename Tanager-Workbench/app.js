@@ -3045,6 +3045,14 @@ coastalWorkflowButtons.forEach(button => {
 });
 
 const HCMC_GHG_SCENE_ID = '20250407_035509_25_4001';
+const GHG_NO_PUBLISHED_PLUME_SCENES = new Set([
+    '20241121_183741_33_4001', // USA
+    '20250219_053251_31_4001', // India (Chhattisgarh)
+    '20250703_063928_86_4001'  // Uzbekistan
+]);
+const GHG_NO_NATIVE_CWMF_COMPARISON_SCENES = new Set([
+    '20250226_065447_19_4001' // Russia — no native CWMF, comparison unsupported
+]);
 
 function isGhgMethaneScene(row) {
     const collections = row?.collections || [row?.collection].filter(Boolean);
@@ -3053,6 +3061,13 @@ function isGhgMethaneScene(row) {
 
 function hasPublishedGhgReference(row) {
     return row?.item_id === HCMC_GHG_SCENE_ID || Boolean(row?.asset_ortho_ql_ch4);
+}
+
+function isGhgComparisonAvailable(row) {
+    return isGhgMethaneScene(row)
+        && hasPublishedGhgReference(row)
+        && !GHG_NO_PUBLISHED_PLUME_SCENES.has(row?.item_id)
+        && !GHG_NO_NATIVE_CWMF_COMPARISON_SCENES.has(row?.item_id);
 }
 
 function clearGhgMapOverlay() {
@@ -3078,11 +3093,7 @@ function setGhgLoading(loading, label='Loading methane scene') {
 
 function syncGhgAnalysis(row=null) {
     const methaneEligible = isGhgMethaneScene(row);
-    const noPublishedPlume = new Set([
-        '20241121_183741_33_4001', // USA
-        '20250219_053251_31_4001', // India
-        '20250703_063928_86_4001'  // Uzbekistan
-    ]).has(row?.item_id);
+    const noPublishedPlume = GHG_NO_PUBLISHED_PLUME_SCENES.has(row?.item_id);
     ghgRequestId++;
     clearGhgMapOverlay();
     currentGhgLayer = null;
@@ -3096,7 +3107,7 @@ function syncGhgAnalysis(row=null) {
     ghgStatus.className = 'ghg-status';
     ghgResult.hidden = true;
     ghgComparison.hidden = true;
-    const referenceAvailable = methaneEligible && hasPublishedGhgReference(row);
+    const referenceAvailable = isGhgComparisonAvailable(row);
     ghgReferenceButton.disabled = !referenceAvailable;
     ghgLayerButtons.forEach(button => {
         if (button.dataset.ghgLayer !== 'comparison') button.disabled = !methaneEligible || noPublishedPlume;
@@ -3219,7 +3230,7 @@ async function runGhgLayer(layer) {
     } finally {
         if (requestId === ghgRequestId) {
             ghgLayerButtons.forEach(button => {
-                button.disabled = button.dataset.ghgLayer === 'comparison' && !hasPublishedGhgReference(selectedScene);
+                button.disabled = button.dataset.ghgLayer === 'comparison' && !isGhgComparisonAvailable(selectedScene);
             });
         }
     }
@@ -3251,7 +3262,7 @@ function toggleGhgOverlay(data, button) {
 }
 
 async function showGhgComparison() {
-    if (!selectedScene || !hasPublishedGhgReference(selectedScene)) return;
+    if (!selectedScene || !isGhgComparisonAvailable(selectedScene)) return;
     const requestId = ++ghgRequestId;
     clearGhgMapOverlay();
     ghgResult.hidden = true;
@@ -3285,7 +3296,7 @@ async function showGhgComparison() {
         }
     } finally {
         ghgLayerButtons.forEach(button => {
-            button.disabled = button.dataset.ghgLayer === 'comparison' && !hasPublishedGhgReference(selectedScene);
+            button.disabled = button.dataset.ghgLayer === 'comparison' && !isGhgComparisonAvailable(selectedScene);
         });
     }
 }
