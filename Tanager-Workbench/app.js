@@ -3161,7 +3161,14 @@ async function fetchGhgLayer(layer) {
     if (ghgLayerCache.has(cacheKey)) return ghgLayerCache.get(cacheKey);
     const params = new URLSearchParams({ scene_id: sceneId, workflow: 'methane', layer, max_size: '480' });
     const response = await fetch(`/api/ghg?${params}`);
-    const data = await response.json();
+    const responseText = await response.text();
+    let data;
+    try {
+        data = JSON.parse(responseText);
+    } catch {
+        const detail = responseText.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 180);
+        throw new Error(detail || `Methane service returned an invalid response (${response.status})`);
+    }
     if (!response.ok) throw new Error(data.error || `Methane analysis failed (${response.status})`);
     ghgLayerCache.set(cacheKey, data);
     return data;

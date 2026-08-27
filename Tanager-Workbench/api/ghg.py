@@ -104,7 +104,7 @@ def _basic_product(scene: dict) -> dict:
     }
 
 
-def _read_basic_scene(root) -> BasicRadianceScene:
+def _read_basic_scene(root, max_size: int) -> BasicRadianceScene:
     dataset = get_node(root, RADIANCE_PATH)
     if dataset is None:
         raise SpectrumError(422, f"{RADIANCE_PATH} is missing")
@@ -115,7 +115,23 @@ def _read_basic_scene(root) -> BasicRadianceScene:
         raise SpectrumError(422, "the 2.3 micrometre methane bands are unavailable")
 
     band_slice = slice(int(selected[0]), int(selected[-1]) + 1)
-    radiance = np.asarray(dataset[band_slice], dtype=np.float32)
+
+    # Native basic-radiance scenes are much larger than the browser preview.
+    # Loading every spatial pixel can exhaust a serverless function before the
+    # API has a chance to return JSON. Retain enough rows for stable background
+    # covariance estimates while sampling detector columns to the requested
+    # preview scale. Slice at the HDF5 layer so unused pixels are never loaded.
+    rows, detectors = int(dataset.shape[1]), int(dataset.shape[2])
+    minimum_background_rows = 7 * int(selected.size)
+    target_rows = max(max_size, minimum_background_rows)
+    row_step = max(1, rows // target_rows)
+    detector_step = max(1, math.ceil(detectors / max_size))
+    row_slice = slice(None, None, row_step)
+    detector_slice = slice(None, None, detector_step)
+    radiance = np.asarray(
+        dataset[band_slice, row_slice, detector_slice],
+        dtype=np.float32,
+    )
     fill_value = float(clean_scalar(dataset.attrs.get("_FillValue", -9999.0)))
     units_value = clean_scalar(dataset.attrs.get("Unit", "unknown"))
     units = units_value.decode("utf-8") if isinstance(units_value, bytes) else str(units_value)
@@ -126,14 +142,14 @@ def _read_basic_scene(root) -> BasicRadianceScene:
     if latitude_node is None or longitude_node is None or fields is None:
         raise SpectrumError(422, "basic-product geolocation or QA fields are missing")
 
-    latitude = np.asarray(latitude_node, dtype=float)
-    longitude = np.asarray(longitude_node, dtype=float)
+    latitude = np.asarray(latitude_node[row_slice, detector_slice], dtype=float)
+    longitude = np.asarray(longitude_node[row_slice, detector_slice], dtype=float)
 
     def qa_field(name: str, default: float = 0.0) -> np.ndarray:
         node = get_node(root, f"{BASIC_DATA_FIELDS}/{name}")
         if node is None:
             return np.full(latitude.shape, default, dtype=np.float32)
-        return np.asarray(node)
+        return np.asarray(node[row_slice, detector_slice])
 
     cloud = qa_field("beta_cloud_mask")
     cirrus = qa_field("beta_cirrus_mask")
@@ -247,7 +263,7 @@ def _render(values: np.ndarray, mask: np.ndarray, cmap_name: str, low: float, hi
 def methane_from_root(scene_id: str, scene_meta: dict, root, layer: str, max_size: int, source_kind: str) -> dict:
     """Run a notebook-derived methane layer from an already opened basic cube."""
 
-    scene = _read_basic_scene(root)
+    scene = _read_basic_scene(root, max_size)
     target = _target_for_scene(scene)
     if layer == "artifact":
         result = run_columnwise_mag1c(scene, target)
