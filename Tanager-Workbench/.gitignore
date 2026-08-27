@@ -4,3 +4,5 @@ _uv/
 .env*
 __pycache__/
 *.pyc
+
+.vercel
