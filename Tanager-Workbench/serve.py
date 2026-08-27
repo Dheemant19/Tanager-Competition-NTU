@@ -6,7 +6,7 @@ This development server serves the static app files and connects the
 to the spectral
 extraction code. It avoids requiring Vercel's local Python runtime.
 """
-# app
+# app  code
 from __future__ import annotations
 
 import argparse
