@@ -4358,8 +4358,12 @@ tutorialNextButton.addEventListener('click', () => {
 });
 
 function closeTutorialVideo() {
-    tutorialVideo.pause();
     tutorialVideoDialog.close();
+}
+
+function stopTutorialVideo() {
+    // Reloading the embedded Drive player stops playback when the dialog closes.
+    tutorialVideo.src = tutorialVideo.src;
 }
 
 welcomeCloseButton.addEventListener('click', () => welcomeDialog.close());
@@ -4370,10 +4374,9 @@ followTutorialButton.addEventListener('click', () => {
 watchTutorialVideoButton.addEventListener('click', () => {
     welcomeDialog.close();
     tutorialVideoDialog.showModal();
-    tutorialVideo.play().catch(() => {});
 });
 tutorialVideoCloseButton.addEventListener('click', closeTutorialVideo);
-tutorialVideoDialog.addEventListener('close', () => tutorialVideo.pause());
+tutorialVideoDialog.addEventListener('close', stopTutorialVideo);
 
 window.addEventListener('load', () => {
     welcomeDialog.showModal();

@@ -2377,7 +2377,10 @@ body { background: var(--paper); }
 }
 
 @media (min-width: 681px) and (max-width: 1280px) {
-    .global-search { max-width: 260px; }
+    .global-search {
+        max-width: 220px;
+        margin-left: -10px;
+    }
 }
 
 .area-tools .roi-shape-btn,
@@ -3125,7 +3128,16 @@ body { background: var(--paper); }
 .welcome-actions button { min-height: 42px; flex: 1; font-weight: 700; }
 .tutorial-video-dialog { width: min(900px, calc(100vw - 32px)); }
 .tutorial-video-dialog header { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 16px; }
-.tutorial-video-dialog video { display: block; width: 100%; max-height: min(68vh, 620px); background: #07120d; border-radius: 7px; }
+.tutorial-video-frame {
+    display: block;
+    width: min(100%, calc(min(68vh, 620px) * 16 / 9));
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin-inline: auto;
+    border: 0;
+    background: #07120d;
+    border-radius: 7px;
+}
 
 #tutorial-overlay {
     position: fixed;

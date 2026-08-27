@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
-    <link rel="stylesheet" href="styles.css?v=analysis-ui-v2-20260804">
+    <link rel="stylesheet" href="styles.css?v=tutorial-layout-20260828">
 </head>
 <body>
 <svg class="icon-sprite" aria-hidden="true">
@@ -414,10 +414,14 @@
         <div><p class="welcome-eyebrow">VIDEO WALKTHROUGH</p><h2 id="tutorial-video-title">Tanager Workbench tutorial</h2></div>
         <button class="icon-button" id="tutorial-video-close" type="button" aria-label="Close video">&times;</button>
     </header>
-    <video id="tutorial-video" controls preload="metadata">
-        <source src="https://drive.google.com/uc?export=download&amp;id=1RuiE6iIXrnSfZS3RGNIVFNPzWL7Jwefa" type="video/mp4">
-        Your browser does not support embedded video.
-    </video>
+    <iframe
+        id="tutorial-video"
+        class="tutorial-video-frame"
+        src="https://drive.google.com/file/d/1RuiE6iIXrnSfZS3RGNIVFNPzWL7Jwefa/preview"
+        title="Tanager Workbench tutorial video"
+        allow="autoplay"
+        allowfullscreen>
+    </iframe>
 </dialog>
 
 <div id="tutorial-overlay" hidden>
@@ -470,6 +474,6 @@
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
 <script src="data/inventory_data.js"></script>
-<script src="app.js?v=guided-tutorial-20260828"></script>
+<script src="app.js?v=drive-video-20260828"></script>
 </body>
 </html>
