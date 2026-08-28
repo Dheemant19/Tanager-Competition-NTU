@@ -1,6 +1,6 @@
-## Access the Tanager Workbench
+# Access the Tanager Workbench
 
-Use the **[Tanager Workbench](https://www.tanager-workbench.app/)** to explore Tanager imagery directly in your browser—no GIS software or Python setup required.
+Use the **[Tanager Workbench](https://www.tanager-workbench.app/)** to explore Tanager imagery directly in your browser, no GIS software or Python setup required.
 The map-first application supports scene discovery, spectral sampling, custom band composites, region comparisons, coastal and greenhouse-gas analysis, and exportable results. A built-in tutorial and video walkthrough guide users through the complete workflow.
 
 
