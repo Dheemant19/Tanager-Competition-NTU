@@ -1,3 +1,9 @@
+## Access the Tanager Workbench
+
+Use the **[Tanager Workbench](https://www.tanager-workbench.app/)** to explore Tanager imagery directly in your browser—no GIS software or Python setup required.
+The map-first application supports scene discovery, spectral sampling, custom band composites, region comparisons, coastal and greenhouse-gas analysis, and exportable results. A built-in tutorial and video walkthrough guide users through the complete workflow.
+
+
 # Tanager Coastal and Greenhouse Gas Analysis
 
 This repository contains two complementary demonstrations of Planet Tanager hyperspectral imagery: coastal water-quality analysis and facility-scale methane monitoring. The studies share one Python environment but retain separate notebooks, scripts, data products, figures, citations, and detailed documentation.
