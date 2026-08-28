@@ -1,0 +1,2 @@
+date,minutes_between_sensors,matched_pixels,spearman_rho,within_factor_two_percent,tanager_p95_fnu_estimate,sentinel_p95_fnu_estimate
+2025-03-02,22,170007,0.8538862513219309,94.62728005317427,19.516836166381836,19.31619644165039

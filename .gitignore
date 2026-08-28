@@ -1,3 +1,7 @@
 .vercel
 .env*
-Tanager_Workbench_Product_Pitch_v9_2_Slides.pptx
+*.h5
+*.nc
+*.npz
+__pycache__/
+.venv/

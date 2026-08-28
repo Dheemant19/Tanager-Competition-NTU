@@ -1,0 +1,6 @@
+segment,short,score,status
+Upstream 1,U1,-10,Moderately polluted
+Upstream 2,U2,-40,Heavily polluted
+Downstream 1,D1,-48,Heavily polluted
+Downstream 2,D2,-52,Heavily polluted
+Downstream 3,D3,-50,Heavily polluted

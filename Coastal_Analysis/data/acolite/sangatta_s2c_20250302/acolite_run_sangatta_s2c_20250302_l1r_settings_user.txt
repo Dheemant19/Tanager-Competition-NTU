@@ -1,0 +1,27 @@
+## ACOLITE settings
+## Written at 2026-07-29 15:45:39
+inputfile=S2L1C/S2C_MSIL1C_20250302T021641_N0511_R003_T50NNF_20250302T055307.SAFE
+output=data/Coastal/acolite/sangatta_s2c_20250302
+runid=sangatta_s2c_20250302
+limit=0.4263644937,117.5166552783,0.6570792095,117.7350537968
+l1r_crop=True
+s2_target_res=10
+atmospheric_correction_method=dark_spectrum
+dsf_aot_estimate=tiled
+dsf_spectrum_option=intercept
+l2w_parameters=tur_dogliotti2015
+l2w_mask=True
+l2w_mask_water_parameters=True
+l2w_mask_cirrus=True
+l2w_mask_high_toa=True
+l2w_mask_negative_rhow=True
+l2w_mask_mixed=True
+output_geolocation=True
+output_projection=True
+l2r_export_geotiff=False
+l2w_export_geotiff=True
+rgb_rhot=True
+rgb_rhos=True
+map_l2w=False
+delete_acolite_run_text_files=False
+new_path=None

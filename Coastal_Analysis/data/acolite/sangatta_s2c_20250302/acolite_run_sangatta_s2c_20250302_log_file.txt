@@ -1,0 +1,250 @@
+2026-07-29 15:45:39: Running ACOLITE processing - Generic GitHub Clone c2026-07-29T15:27:24
+2026-07-29 15:45:39: Python - win32 - 3.13.14 | packaged by conda-forge | (main, Jun 12 2026, 09:44:26) [MSC v.1944 64 bit (AMD64)]
+2026-07-29 15:45:39: Platform - Windows 11 - AMD64 - 10.0.26200
+2026-07-29 15:45:39: Run ID - sangatta_s2c_20250302
+2026-07-29 15:45:39: Identified S2L1C/S2C_MSIL1C_20250302T021641_N0511_R003_T50NNF_20250302T055307.SAFE as Sentinel-2 .SAFE type
+2026-07-29 15:45:39: Starting conversion of 1 scenes
+2026-07-29 15:45:39: Starting conversion of S2L1C/S2C_MSIL1C_20250302T021641_N0511_R003_T50NNF_20250302T055307.SAFE
+2026-07-29 15:45:39: Importing metadata from L1C_T50NNF_A002547_20250302T023423
+2026-07-29 15:45:39: Reading per pixel geometry
+2026-07-29 15:45:40: Computing band average per detector geometry
+2026-07-29 15:45:40: Detector 1
+2026-07-29 15:45:40: Detector 2
+2026-07-29 15:45:40: Detector 3
+2026-07-29 15:45:40: Detector 4
+2026-07-29 15:45:41: Detector 5
+2026-07-29 15:45:41: Detector 6
+2026-07-29 15:45:42: Wrote raa (2551, 2433)
+2026-07-29 15:45:42: Wrote vza (2551, 2433)
+2026-07-29 15:45:42: Wrote sza (2551, 2433)
+2026-07-29 15:45:42: Writing geolocation lon/lat
+2026-07-29 15:45:43: Wrote lon (2551, 2433)
+2026-07-29 15:45:43: Wrote lat (2551, 2433)
+2026-07-29 15:45:43: Converting bands
+2026-07-29 15:45:44: Converting bands: Wrote rhot_444 ((2551, 2433))
+2026-07-29 15:45:44: Converting bands: Wrote rhot_489 ((2551, 2433))
+2026-07-29 15:45:44: Converting bands: Wrote rhot_561 ((2551, 2433))
+2026-07-29 15:45:45: Converting bands: Wrote rhot_667 ((2551, 2433))
+2026-07-29 15:45:45: Converting bands: Wrote rhot_707 ((2551, 2433))
+2026-07-29 15:45:45: Converting bands: Wrote rhot_741 ((2551, 2433))
+2026-07-29 15:45:46: Converting bands: Wrote rhot_785 ((2551, 2433))
+2026-07-29 15:45:46: Converting bands: Wrote rhot_835 ((2551, 2433))
+2026-07-29 15:45:46: Converting bands: Wrote rhot_866 ((2551, 2433))
+2026-07-29 15:45:47: Converting bands: Wrote rhot_947 ((2551, 2433))
+2026-07-29 15:45:47: Converting bands: Wrote rhot_1372 ((2551, 2433))
+2026-07-29 15:45:48: Converting bands: Wrote rhot_1612 ((2551, 2433))
+2026-07-29 15:45:48: Converting bands: Wrote rhot_2191 ((2551, 2433))
+2026-07-29 15:45:48: Conversion took 8.9 seconds
+2026-07-29 15:45:48: Created data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L1R.nc
+2026-07-29 15:45:53: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L1R_crop_rgb_rhot.png
+2026-07-29 15:45:54: Running acolite for data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L1R_crop.nc
+2026-07-29 15:45:54: Using RSR S2C_MSI_V4 for sensor S2C_MSI
+2026-07-29 15:45:54: Getting ancillary data for 2025-03-02T02:38:05.634934+00:00 117.626E 0.542N
+2026-07-29 15:45:54: Downloading file GMAO_MERRA2.20250302T020000.MET.nc
+2026-07-29 15:45:54: Downloading file GMAO_MERRA2.20250302T020000.MET.nc failed
+2026-07-29 15:45:54: Downloading file GMAO_MERRA2.20250302T030000.MET.nc
+2026-07-29 15:45:54: Downloading file GMAO_MERRA2.20250302T030000.MET.nc failed
+2026-07-29 15:45:54: No ozone file found for 2025-03-02T02:38:05.634934+00:00
+2026-07-29 15:45:54: No NCEP files found for 2025-03-02T02:38:05.634934+00:00
+2026-07-29 15:45:54: default uoz: 0.30 uwv: 1.50 pressure: 1013.25
+2026-07-29 15:45:54: current uoz: 0.30 uwv: 1.50 pressure: 1013.25
+2026-07-29 15:45:54: Using DSF atmospheric correction
+2026-07-29 15:45:54: Processing with 25 tiles (5x5 tiles of 600x600 pixels)
+2026-07-29 15:45:54: Writing lon
+2026-07-29 15:45:54: Wrote lon (2549, 2429)
+2026-07-29 15:45:54: Writing lat
+2026-07-29 15:45:54: Wrote lat (2549, 2429)
+2026-07-29 15:45:54: Writing sza
+2026-07-29 15:45:54: Wrote sza (2549, 2429)
+2026-07-29 15:45:54: Writing vza
+2026-07-29 15:45:55: Wrote vza (2549, 2429)
+2026-07-29 15:45:55: Writing raa
+2026-07-29 15:45:55: Wrote raa (2549, 2429)
+2026-07-29 15:45:55: Loading LUTs ['ACOLITE-LUT-202110-MOD1', 'ACOLITE-LUT-202110-MOD2']
+2026-07-29 15:45:58: Loading LUTs took 3.3 s
+2026-07-29 15:45:58: Running AOT estimation for band 1 (rhot_444)
+2026-07-29 15:45:58: S2C_MSI_V4/B1 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:45:58: S2C_MSI_V4/B1 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:45:58: Running AOT estimation for band 2 (rhot_489)
+2026-07-29 15:45:59: S2C_MSI_V4/B2 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:45:59: S2C_MSI_V4/B2 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:45:59: Running AOT estimation for band 3 (rhot_561)
+2026-07-29 15:45:59: S2C_MSI_V4/B3 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:45:59: S2C_MSI_V4/B3 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:45:59: Running AOT estimation for band 4 (rhot_667)
+2026-07-29 15:45:59: S2C_MSI_V4/B4 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:45:59: S2C_MSI_V4/B4 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:45:59: Running AOT estimation for band 5 (rhot_707)
+2026-07-29 15:45:59: S2C_MSI_V4/B5 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:45:59: S2C_MSI_V4/B5 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:45:59: Running AOT estimation for band 6 (rhot_741)
+2026-07-29 15:46:00: S2C_MSI_V4/B6 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:46:00: S2C_MSI_V4/B6 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:46:00: Running AOT estimation for band 7 (rhot_785)
+2026-07-29 15:46:00: S2C_MSI_V4/B7 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:46:00: S2C_MSI_V4/B7 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:46:00: Running AOT estimation for band 8 (rhot_835)
+2026-07-29 15:46:00: S2C_MSI_V4/B8 ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:46:00: S2C_MSI_V4/B8 ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:46:00: Running AOT estimation for band 8A (rhot_866)
+2026-07-29 15:46:01: S2C_MSI_V4/B8A ACOLITE-LUT-202110-MOD1 took 0.001s (RevLUT)
+2026-07-29 15:46:01: S2C_MSI_V4/B8A ACOLITE-LUT-202110-MOD2 took 0.001s (RevLUT)
+2026-07-29 15:46:01: Choosing best fitting model: min_drmsd (2 bands)
+2026-07-29 15:46:01: Computing RMSD for model ACOLITE-LUT-202110-MOD1
+2026-07-29 15:46:01: Computing RMSD for model ACOLITE-LUT-202110-MOD2
+2026-07-29 15:46:01: Selecting most common model for processing.
+2026-07-29 15:46:01: ACOLITE-LUT-202110-MOD1: 12.0%: mean aot of subset = 0.07
+2026-07-29 15:46:01: ACOLITE-LUT-202110-MOD2: 88.0%: mean aot of subset = 0.06
+2026-07-29 15:46:01: Selected ACOLITE-LUT-202110-MOD2, mean aot = 0.06
+2026-07-29 15:46:01: use_revlut
+2026-07-29 15:46:01: True
+2026-07-29 15:46:01: Wrote rhot_444 (2549, 2429)
+2026-07-29 15:46:01: Computing surface reflectance
+2026-07-29 15:46:01: 1
+2026-07-29 15:46:01: 444
+2026-07-29 15:46:01: 0.998
+2026-07-29 15:46:01: Interpolating tiles
+2026-07-29 15:46:03: Wrote rhos_444 (2549, 2429)
+2026-07-29 15:46:03: S2C_MSI_V4/B1 took 2.4s (RevLUT)
+2026-07-29 15:46:03: Wrote rhot_489 (2549, 2429)
+2026-07-29 15:46:03: Computing surface reflectance
+2026-07-29 15:46:03: 2
+2026-07-29 15:46:03: 489
+2026-07-29 15:46:03: 0.985
+2026-07-29 15:46:03: Interpolating tiles
+2026-07-29 15:46:06: Wrote rhos_489 (2549, 2429)
+2026-07-29 15:46:06: S2C_MSI_V4/B2 took 2.3s (RevLUT)
+2026-07-29 15:46:06: Wrote rhot_561 (2549, 2429)
+2026-07-29 15:46:06: Computing surface reflectance
+2026-07-29 15:46:06: 3
+2026-07-29 15:46:06: 561
+2026-07-29 15:46:06: 0.932
+2026-07-29 15:46:06: Interpolating tiles
+2026-07-29 15:46:08: Wrote rhos_561 (2549, 2429)
+2026-07-29 15:46:08: S2C_MSI_V4/B3 took 2.3s (RevLUT)
+2026-07-29 15:46:08: Wrote rhot_667 (2549, 2429)
+2026-07-29 15:46:08: Computing surface reflectance
+2026-07-29 15:46:08: 4
+2026-07-29 15:46:08: 667
+2026-07-29 15:46:08: 0.963
+2026-07-29 15:46:08: Interpolating tiles
+2026-07-29 15:46:11: Wrote rhos_667 (2549, 2429)
+2026-07-29 15:46:11: S2C_MSI_V4/B4 took 2.3s (RevLUT)
+2026-07-29 15:46:11: Wrote rhot_707 (2549, 2429)
+2026-07-29 15:46:11: Computing surface reflectance
+2026-07-29 15:46:11: 5
+2026-07-29 15:46:11: 707
+2026-07-29 15:46:11: 0.957
+2026-07-29 15:46:11: Interpolating tiles
+2026-07-29 15:46:13: Wrote rhos_707 (2549, 2429)
+2026-07-29 15:46:13: S2C_MSI_V4/B5 took 2.4s (RevLUT)
+2026-07-29 15:46:13: Wrote rhot_741 (2549, 2429)
+2026-07-29 15:46:13: Computing surface reflectance
+2026-07-29 15:46:13: 6
+2026-07-29 15:46:13: 741
+2026-07-29 15:46:13: 0.964
+2026-07-29 15:46:13: Interpolating tiles
+2026-07-29 15:46:15: Wrote rhos_741 (2549, 2429)
+2026-07-29 15:46:15: S2C_MSI_V4/B6 took 2.4s (RevLUT)
+2026-07-29 15:46:15: Wrote rhot_785 (2549, 2429)
+2026-07-29 15:46:16: Computing surface reflectance
+2026-07-29 15:46:16: 7
+2026-07-29 15:46:16: 785
+2026-07-29 15:46:16: 0.984
+2026-07-29 15:46:16: Interpolating tiles
+2026-07-29 15:46:18: Wrote rhos_785 (2549, 2429)
+2026-07-29 15:46:18: S2C_MSI_V4/B7 took 2.4s (RevLUT)
+2026-07-29 15:46:18: Wrote rhot_835 (2549, 2429)
+2026-07-29 15:46:18: Computing surface reflectance
+2026-07-29 15:46:18: 8
+2026-07-29 15:46:18: 835
+2026-07-29 15:46:18: 0.941
+2026-07-29 15:46:18: Interpolating tiles
+2026-07-29 15:46:20: Wrote rhos_835 (2549, 2429)
+2026-07-29 15:46:20: S2C_MSI_V4/B8 took 2.4s (RevLUT)
+2026-07-29 15:46:20: Wrote rhot_866 (2549, 2429)
+2026-07-29 15:46:20: Computing surface reflectance
+2026-07-29 15:46:20: 8A
+2026-07-29 15:46:20: 866
+2026-07-29 15:46:20: 0.998
+2026-07-29 15:46:20: Interpolating tiles
+2026-07-29 15:46:23: Wrote rhos_866 (2549, 2429)
+2026-07-29 15:46:23: S2C_MSI_V4/B8A took 2.5s (RevLUT)
+2026-07-29 15:46:23: Wrote rhot_947 (2549, 2429)
+2026-07-29 15:46:23: Band 9 at 947 nm has tgas < min_tgas_rho (0.32 < 0.70)
+2026-07-29 15:46:23: Wrote rhot_1372 (2549, 2429)
+2026-07-29 15:46:23: Band 10 at 1372 nm has tgas < min_tgas_rho (0.01 < 0.70)
+2026-07-29 15:46:23: Wrote rhot_1612 (2549, 2429)
+2026-07-29 15:46:23: Computing surface reflectance
+2026-07-29 15:46:23: 11
+2026-07-29 15:46:23: 1612
+2026-07-29 15:46:23: 0.963
+2026-07-29 15:46:23: Interpolating tiles
+2026-07-29 15:46:26: Wrote rhos_1612 (2549, 2429)
+2026-07-29 15:46:26: S2C_MSI_V4/B11 took 2.5s (RevLUT)
+2026-07-29 15:46:26: Wrote rhot_2191 (2549, 2429)
+2026-07-29 15:46:26: Computing surface reflectance
+2026-07-29 15:46:26: 12
+2026-07-29 15:46:26: 2191
+2026-07-29 15:46:26: 0.924
+2026-07-29 15:46:26: Interpolating tiles
+2026-07-29 15:46:28: Wrote rhos_2191 (2549, 2429)
+2026-07-29 15:46:28: S2C_MSI_V4/B12 took 2.4s (RevLUT)
+2026-07-29 15:46:28: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2R_crop.nc
+2026-07-29 15:46:30: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2R_crop_rgb_rhot.png
+2026-07-29 15:46:31: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2R_crop_rgb_rhos.png
+2026-07-29 15:46:31: L2W keeping data in memory: False
+2026-07-29 15:46:31: rhot datasets:
+2026-07-29 15:46:31: ['rhot_444', 'rhot_489', 'rhot_561', 'rhot_667', 'rhot_707', 'rhot_741', 'rhot_785', 'rhot_835', 'rhot_866', 'rhot_947', 'rhot_1372', 'rhot_1612', 'rhot_2191']
+2026-07-29 15:46:31: rhot wavelengths:
+2026-07-29 15:46:31: [444, 489, 561, 667, 707, 741, 785, 835, 866, 947, 1372, 1612, 2191]
+2026-07-29 15:46:31: rhos datasets:
+2026-07-29 15:46:31: ['rhos_444', 'rhos_489', 'rhos_561', 'rhos_667', 'rhos_707', 'rhos_741', 'rhos_785', 'rhos_835', 'rhos_866', 'rhos_1612', 'rhos_2191']
+2026-07-29 15:46:31: rhos wavelengths:
+2026-07-29 15:46:31: [444, 489, 561, 667, 707, 741, 785, 835, 866, 1612, 2191]
+2026-07-29 15:46:31: Using RSR S2C_MSI_V4 for sensor S2C_MSI
+2026-07-29 15:46:31: Running ACOLITE flagging function for data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2R_crop.nc.
+2026-07-29 15:46:31: Computing non water threshold mask.
+2026-07-29 15:46:31: Computing non water threshold mask from rhot_1612 > 0.0215.
+2026-07-29 15:46:32: Computing cirrus mask.
+2026-07-29 15:46:32: Computing cirrus mask from rhot_1372 > 0.005.
+2026-07-29 15:46:33: Computing TOA limit mask.
+2026-07-29 15:46:33: Computing TOA limit mask from rhot_444 > 0.3.
+2026-07-29 15:46:33: Computing TOA limit mask from rhot_489 > 0.3.
+2026-07-29 15:46:34: Computing TOA limit mask from rhot_561 > 0.3.
+2026-07-29 15:46:35: Computing TOA limit mask from rhot_667 > 0.3.
+2026-07-29 15:46:35: Computing TOA limit mask from rhot_707 > 0.3.
+2026-07-29 15:46:36: Computing TOA limit mask from rhot_741 > 0.3.
+2026-07-29 15:46:37: Computing TOA limit mask from rhot_785 > 0.3.
+2026-07-29 15:46:37: Computing TOA limit mask from rhot_835 > 0.3.
+2026-07-29 15:46:38: Computing TOA limit mask from rhot_866 > 0.3.
+2026-07-29 15:46:39: Computing TOA limit mask from rhot_947 > 0.3.
+2026-07-29 15:46:39: Computing TOA limit mask from rhot_1372 > 0.3.
+2026-07-29 15:46:40: Computing TOA limit mask from rhot_1612 > 0.3.
+2026-07-29 15:46:40: Computing TOA limit mask from rhot_2191 > 0.3.
+2026-07-29 15:46:41: Computing negative reflectance mask.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_444.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_489.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_561.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_667.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_707.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_741.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_785.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_835.
+2026-07-29 15:46:41: Computing negative reflectance mask from rhos_866.
+2026-07-29 15:46:41: Copying datasets from L2R.
+2026-07-29 15:46:41: Copying lon, base dataset lon
+2026-07-29 15:46:41: Writing lon
+2026-07-29 15:46:41: Wrote lon (2549, 2429)
+2026-07-29 15:46:41: Copying lat, base dataset lat
+2026-07-29 15:46:41: Writing lat
+2026-07-29 15:46:42: Wrote lat (2549, 2429)
+2026-07-29 15:46:42: Wrote l2_flags (2549, 2429)
+2026-07-29 15:46:42: Writing TUR_Dogliotti2015
+2026-07-29 15:46:42: Wrote TUR_Dogliotti2015 (2549, 2429)
+2026-07-29 15:46:42: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2W_crop.nc
+2026-07-29 15:46:42: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2W_crop_l2_flags.tif
+2026-07-29 15:46:42: Wrote data/Coastal/acolite/sangatta_s2c_20250302/S2C_MSI_2025_03_02_02_38_05_T50NNF_L2W_crop_TUR_Dogliotti2015.tif
+2026-07-29 15:46:44: No projection grid resolution set in output_projection_resolution or default_projection_resolution
+2026-07-29 15:46:44: No projection grid resolution set in output_projection_resolution or default_projection_resolution
+2026-07-29 15:46:44: No projection grid resolution set in output_projection_resolution or default_projection_resolution

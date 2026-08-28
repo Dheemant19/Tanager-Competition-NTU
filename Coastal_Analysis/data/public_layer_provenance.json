@@ -1,0 +1,36 @@
+{
+  "gmw": {
+    "service": "https://data-gis.unep-wcmc.org/server/rest/services/Hosted/Global_Mangrove_Watch/FeatureServer/0/query",
+    "request_url": "https://data-gis.unep-wcmc.org/server/rest/services/Hosted/Global_Mangrove_Watch/FeatureServer/0/query?geometry=117.51665528%2C0.42636449%2C117.73505380%2C0.65707921&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnGeometry=true&outSR=32650&f=geojson&where=1%3D1&outFields=%2A",
+    "query_parameters": {
+      "geometry": "117.51665528,0.42636449,117.73505380,0.65707921",
+      "geometryType": "esriGeometryEnvelope",
+      "inSR": "4326",
+      "spatialRel": "esriSpatialRelIntersects",
+      "returnGeometry": "true",
+      "outSR": "32650",
+      "f": "geojson",
+      "where": "1=1",
+      "outFields": "*"
+    },
+    "feature_count": 302,
+    "crs": "EPSG:32650"
+  },
+  "tn_kutai": {
+    "service": "https://geoservices.big.go.id/gis/rest/services/PTRA/Atlas_250K_KawasanKonservasi/MapServer/7/query",
+    "request_url": "https://geoservices.big.go.id/gis/rest/services/PTRA/Atlas_250K_KawasanKonservasi/MapServer/7/query?geometry=117.51665528%2C0.42636449%2C117.73505380%2C0.65707921&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&returnGeometry=true&outSR=32650&f=geojson&where=Jenis%3D%27Taman+Nasional%27&outFields=OBJECTID%2CNAME%2CJenis",
+    "query_parameters": {
+      "geometry": "117.51665528,0.42636449,117.73505380,0.65707921",
+      "geometryType": "esriGeometryEnvelope",
+      "inSR": "4326",
+      "spatialRel": "esriSpatialRelIntersects",
+      "returnGeometry": "true",
+      "outSR": "32650",
+      "f": "geojson",
+      "where": "Jenis='Taman Nasional'",
+      "outFields": "OBJECTID,NAME,Jenis"
+    },
+    "feature_count": 1,
+    "crs": "EPSG:32650"
+  }
+}
