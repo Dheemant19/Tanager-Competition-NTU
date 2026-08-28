@@ -1,0 +1,23 @@
+dimension,category,plume_count,quantified_count,hidden_or_unquantified_count,quantified_percent,median_public_rate_kg_hr
+Sensitivity mode,glint,10,10,0,100.0,1612.9763035741305
+Sensitivity mode,maximum_sensitivity,142,87,55,61.3,834.4976112916314
+Sensitivity mode,medium_sensitivity,38,24,14,63.2,881.7024482064717
+Sensitivity mode,standard_sensitivity,195,108,87,55.4,822.9005668873403
+Mission phase,first_light,41,23,18,56.1,1568.696737355656
+Mission phase,production,344,206,138,59.9,822.8570249179999
+Absolute off-nadir angle,0-5°,44,25,19,56.8,1265.0054083788184
+Absolute off-nadir angle,>5-15°,122,74,48,60.7,898.7921045074395
+Absolute off-nadir angle,>15-30°,216,129,87,59.7,800.9884560099242
+Absolute off-nadir angle,>30°,3,1,2,33.3,782.5405525438713
+Wind speed used,0-2 m/s,178,97,81,54.5,716.8218803405762
+Wind speed used,>2-4 m/s,161,100,61,62.1,920.4210396306676
+Wind speed used,>4-6 m/s,39,27,12,69.2,1810.6932790853361
+Wind speed used,>6 m/s,7,5,2,71.4,2975.268799801296
+Plumes in same scene,1 plume,150,91,59,60.7,828.1082865559024
+Plumes in same scene,2-3 plumes,172,110,62,64.0,915.0818208332978
+Plumes in same scene,4+ plumes,63,28,35,44.4,1007.586620927507
+Offshore flag,Not flagged offshore,374,218,156,58.3,828.1161542240488
+Offshore flag,Offshore,11,11,0,100.0,2221.5357042578776
+Acquisition year,2024,3,1,2,33.3,1750.213330079008
+Acquisition year,2025,246,144,102,58.5,1025.789793239688
+Acquisition year,2026,136,84,52,61.8,745.4254795699608

@@ -1,0 +1,23 @@
+metric,value,unit,notes
+audit_fetched_at_utc,2026-07-21T08:12:05.331749Z,timestamp,Live API audit date
+fixed_cohort_plumes,385,plume observations,Existing SEA CSV
+unique_tanager_scenes,237,scenes,Plume-bearing scenes only
+carbon_mapper_sources_500m,93,sources,Native API grouping
+publicly_quantified_plumes,229,plumes,Rate and uncertainty available
+unquantified_or_hidden_plumes,156,plumes,No public emission_auto
+unquantified_or_hidden_percent,40.5,percent,Fixed cohort
+sources_with_no_public_rates,12,sources,Every cohort detection lacks rate
+sources_with_mixed_rate_access,42,sources,"Some public, some hidden"
+single_detection_date_sources,43,sources,Cohort only
+repeat_detection_date_sources,50,sources,At least two dates in cohort
+sources_without_cohort_detection_dates,0,sources,After documented timestamp fallback
+asean_countries_with_land_detections,7,countries,Point-in-polygon
+asean_countries_without_land_detections,4,countries,Not evidence of no emissions
+plume_quality_values_present,0,plumes,Field may exist but be null
+live_scene_timestamps_missing,84,plumes,Saved cohort datetime used for analysis
+rates_became_available_since_saved_csv,0,plumes,Live API drift
+rates_became_unavailable_since_saved_csv,0,plumes,Live API drift
+published_rates_changed_since_saved_csv,0,plumes,Exact numeric comparison
+hidden_flags_changed_since_saved_csv,0,plumes,Live API drift
+unmapped_cohort_plumes,0,plumes,500 m source mapping
+plumes_mapped_to_multiple_sources,0,plumes,Should be zero

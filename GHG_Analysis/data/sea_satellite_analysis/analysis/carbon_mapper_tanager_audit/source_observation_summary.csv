@@ -1,0 +1,12 @@
+metric,value,unit
+source_count,93.0,sources
+sources_with_observation_denominator,93.0,sources
+sources_with_two_or_more_qualifying_observation_dates,68.0,sources
+sources_with_at_least_one_qualifying_null_date,27.0,sources
+median_qualifying_observation_dates,2.0,dates per source
+maximum_qualifying_observation_dates,15.0,dates
+median_detection_dates,2.0,dates per source
+median_persistence,1.0,fraction
+minimum_persistence,0.25,fraction
+maximum_persistence,1.0,fraction
+sources_with_persistence_equal_to_one,66.0,sources

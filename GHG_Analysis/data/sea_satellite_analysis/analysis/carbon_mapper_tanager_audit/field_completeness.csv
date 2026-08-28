@@ -1,0 +1,24 @@
+level,field_or_capability,available_count,missing_count,available_percent,missing_percent
+Plume,Live API scene timestamp,301,84,78.2,21.8
+Plume,Analysis timestamp after saved-cohort fallback,385,0,100.0,0.0
+Plume,Public emission rate,229,156,59.5,40.5
+Plume,Public emission uncertainty,229,156,59.5,40.5
+Plume,Plume quality value,0,385,0.0,100.0
+Plume,Wind speed,385,0,100.0,0.0
+Plume,Wind direction,385,0,100.0,0.0
+Plume,Specific sector code,365,20,94.8,5.2
+Plume,Mission phase,385,0,100.0,0.0
+Plume,Sensitivity mode,385,0,100.0,0.0
+Plume,Ground sample distance,385,0,100.0,0.0
+Plume,Off-nadir angle,385,0,100.0,0.0
+Plume,Processing software version,385,0,100.0,0.0
+Plume,Emission product version,385,0,100.0,0.0
+Plume,Plume image,385,0,100.0,0.0
+Plume,Concentration raster,385,0,100.0,0.0
+Plume,Publication timestamp,385,0,100.0,0.0
+Plume,Non-empty publication-source list,0,385,0.0,100.0
+Plume,Carbon Mapper 500 m source match,385,0,100.0,0.0
+Source,Carbon Mapper spatial-cluster identifier,93,0,100.0,0.0
+Source,Observation-date denominator,93,0,100.0,0.0
+Source,Detection-date count,93,0,100.0,0.0
+Source,Persistence metric,93,0,100.0,0.0

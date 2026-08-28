@@ -1,0 +1,11 @@
+gap_category,not_available_in_public_endpoints,why_it_matters
+Observation inventory,Complete public region-wide scene inventory and per-scene source coverage detail,"Public source summaries provide aggregate qualifying observation dates, but the detailed scene-coverage query required authentication in this audit."
+Tasking history,"Requested, acquired, rejected, and unpublished attempts",Needed to measure geographic and seasonal selection bias.
+Scene usability,"Per-source cloud, haze, valid-pixel fraction, and usable area","The source query uses a documented cloud threshold, but does not expose enough public detail to calculate tropical valid-observation yield."
+Sensitivity,Scene- and source-specific minimum detection limit,Needed before a non-detection can be interpreted as a valid null.
+Retrieval diagnostics,"Local background noise, artifact flags, and dual-window agreement","Needed to compare reliability across vegetation, dark ponds, cities, coasts, and glint."
+Quantification provenance,Reason code when emission_auto is hidden or unavailable,"Needed to separate wind failure, plume-shape failure, QC suppression, and policy suppression."
+Illumination,Sun elevation and azimuth in the public plume record,Needed to diagnose radiance and surface-dependent retrieval performance.
+Wind provenance,"Wind model, analysis time, spatial resolution, and alternative-wind spread",Needed to reproduce and interpret emission-rate uncertainty.
+Surface context,Land cover and retrieval-background class,Needed to quantify performance by tropical source environment.
+Action readiness,"Verified facility/operator, stakeholder, intervention, response, and mitigation status",Needed to turn detection evidence into a defensible action pathway.

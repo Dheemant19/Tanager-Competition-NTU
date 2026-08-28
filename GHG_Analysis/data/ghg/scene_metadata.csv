@@ -1,0 +1,3 @@
+item_id,datetime,location,collection_mode,sun_elevation,off_nadir,gsd_m,cloud_percent
+20250423_134021_00_4001,2025-04-23T13:40:21Z,Brazil Offshore,glint,48.5,26.3,47.55,14
+20250423_134026_31_4001,2025-04-23T13:40:26.310080Z,Brazil Offshore,glint,48.2,26.3,47.61,9

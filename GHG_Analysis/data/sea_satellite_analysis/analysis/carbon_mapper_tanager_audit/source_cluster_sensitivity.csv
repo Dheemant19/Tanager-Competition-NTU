@@ -1,0 +1,4 @@
+cluster_distance_m,source_count,cohort_plumes_mapped,cohort_plumes_unmapped,noncohort_plume_ids_in_matching_sources
+500,93,385,0,5
+1000,86,385,0,5
+5000,81,385,0,5

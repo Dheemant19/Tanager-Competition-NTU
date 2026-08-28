@@ -1,0 +1,7 @@
+sector,sector_label,detections,sources_500m,quantified,hidden_or_unquantified,median_public_rate_kg_hr,detection_share_percent,quantified_percent
+6A,Solid waste / landfill,339,63,200,139,920.4210396306676,88.1,59.0
+1B2,Oil and gas,18,16,14,4,1072.2817226182096,4.7,77.8
+other,Other / unclassified,18,8,8,10,581.4584589499402,4.7,44.4
+1B1a,Coal mining,7,3,4,3,701.2235300353973,1.8,57.1
+,Unclassified,2,2,2,0,452.8979744141965,0.5,100.0
+6B,Wastewater,1,1,1,0,1174.9033680044581,0.3,100.0

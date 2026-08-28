@@ -1,0 +1,15 @@
+country,detections,sources_500m,unique_scenes,quantified,hidden_or_unquantified,median_public_rate_kg_hr,quantified_percent,asean_country
+Indonesia,108,26,65,47,61,594.699752638775,43.5,True
+Philippines,72,8,37,47,25,1043.9268802360252,65.3,True
+Vietnam,47,13,35,26,21,940.099883146831,55.3,True
+Malaysia,46,11,33,28,18,779.1999732968877,60.9,True
+Thailand,32,9,20,21,11,1394.9464294354739,65.6,True
+Cambodia,20,1,10,10,10,1025.2015782507756,50.0,True
+Myanmar,20,9,10,13,7,599.7188014584539,65.0,True
+Brunei,0,0,0,0,0,,,True
+Laos,0,0,0,0,0,,,True
+Singapore,0,0,0,0,0,,,True
+Timor-Leste,0,0,0,0,0,,,True
+Hong Kong,20,2,14,17,3,2471.04413697973,85.0,False
+Offshore / boundary-unassigned,15,12,12,15,0,1810.6932790853361,100.0,False
+People's Republic of China,5,3,3,5,0,268.0786145278831,100.0,False
